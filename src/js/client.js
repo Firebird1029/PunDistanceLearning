@@ -384,18 +384,17 @@ socket.on("studentSchedData", function receivedSchedData (data) {
 	}
 });
 
-$("#makePDF").click(function() {
-	createPDF();
-});
-
 
 function createPDF() {
+	console.log("HGVGGHVGVH");
+	$("#makePDFButton").html(`<i class="fas fa-spinner fa-spin"></i>`);
 	const filename  = 'table1.pdf';
 	// var quality = 1;
 	html2canvas(document.getElementById("scheduleTable"), {scale: 1}).then(canvas => {
 		let pdf = new jsPDF('p', 'mm', 'a4');
 		pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 190, 295);
 		pdf.save(filename);
+		$("#makePDFButton").html("Convert to PDF");
 	});
 }
 
@@ -403,6 +402,9 @@ function createPDF() {
 // Lots of animate
 $("#makePDFButton").click(function() {
 	createPDF();
+});
+$("#makePDFButton").hover(function() {
+	$("#makePDFButton").animateCSS("pulse");
 });
 $("#autoSignInBtn").hover(function() {
 	$("#autoSignInBtn").animateCSS("pulse");
