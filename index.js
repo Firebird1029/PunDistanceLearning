@@ -139,7 +139,6 @@ function getStudentDataViaNightmare (username, password, callback) {
 	console.log("trying to get student data");
 	console.log(username);
 	console.log(password);
-	nightmare = Nightmare({show: false});
 	nightmare
 		.goto('https://mybackpack.punahou.edu/SeniorApps/facelets/registration/loginCenter.xhtml')
 		.wait('body')
