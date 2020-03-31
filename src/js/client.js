@@ -1,8 +1,34 @@
 "use strict"; /* eslint-env browser */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
 const debug = true;
 
+// Brandon's TODO
+// Fix 404 (just reload to homepage)
+// login fail auto signin
+// Show the headers of possible sync classes
+// If class name is too long!
+// Animate css
+// You only have class 3x/cycle!
+// Customize font, colors !
+// Gif while loading
+// If automatic pull didnt work !
+// Form validation !!
+// Deploy! !!
+// 
+// Stylistic Fixes
+// Schedule table center align vertically class name
+
 var socket = io.connect(),
 	conversionTable = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f"},
+	modTimeConversion = {1: "7:30", 2: "7:45", 3: "8:00", 4: "8:15", 5: "8:30", 6: "8:45", 7: "9:00", 8: "9:15", 9: "9:30", 10: "9:45",
+		11: "10:00", 12: "10:15", 13: "10:30", 14: "10:45", 15: "11:00", 16: "11:15", 17: "11:30", 18: "11:45", 19: "12:00", 20: "12:15", 21: "12:30",
+		22: "12:45", 23: "1:00", 24: "1:15", 25: "1:30", 26: "1:45", 27: "2:00", 28: "2:15", 29: "2:30", 30: "2:45", 31: "3:00", 32: "3:15", 33: "3:30"},
+	modTimeConversionAMPM = {1: "7:30 AM", 2: "7:45 AM", 3: "8:00 AM", 4: "8:15 AM", 5: "8:30 AM", 6: "8:45 AM", 7: "9:00 AM", 8: "9:15 AM", 9: "9:30 AM", 10: "9:45 AM",
+			11: "10:00 AM", 12: "10:15 AM", 13: "10:30 AM", 14: "10:45 AM", 15: "11:00 AM", 16: "11:15 AM", 17: "11:30 AM", 18: "11:45 AM", 19: "12:00 PM",
+			20: "12:15 PM", 21: "12:30 PM", 22: "12:45 PM", 23: "1:00 PM", 24: "1:15 PM", 25: "1:30 PM", 26: "1:45 PM", 27: "2:00 PM",
+			28: "2:15 PM", 29: "2:30 PM", 30: "2:45 PM", 31: "3:00 PM", 32: "3:15 PM", 33: "3:30 PM"},
+	DLmodTimeConversion = {1: "9:00", 2: "9:10", 3: "9:20", 4: "9:30", 5: "9:40", 6: "9:50", 7: "10:00", 8: "10:10", 9: "10:20", 10: "10:30",
+		11: "10:40", 12: "10:50", 13: "11:00", 14: "11:10", 15: "11:20", 16: "11:30", 17: "11:40", 18: "11:50", 19: "12:00", 20: "12:10", 21: "12:20",
+		22: "12:30", 23: "12:40", 24: "12:50", 25: "1:00", 26: "1:10", 27: "1:20", 28: "1:30", 29: "1:40", 30: "1:50", 31: "2:00", 32: "2:10", 33: "2:20"},
 	masterSchedLayout = [[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
@@ -11,11 +37,6 @@ var socket = io.connect(),
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]];
 // This 2D array, masterSched, represents the data that the DOM table will show. It is basically your schedule, in 2D array format.
 var masterSched = _.cloneDeep(masterSchedLayout);
-
-// Brandon's TODO
-// Fix 404 (just reload to homepage)
-// Show the headers of possible sync classes
-// If class name is too long!
 
 // Navbar Burger
 // $(document).ready(function () {
@@ -41,12 +62,14 @@ $(".modal-close, .modal-background").click(() => {
 })
 
 // Auto-Sign In DOM Code
+// TODO add key bind enter button
 $("#autoSignInLoginBtn").click(() => {
 	// Check that both username and password are not blank
 	if ($("#autoSignInUsername").val() != "" && $("#autoSignInPassword").val() != "") {
 		socket.emit("autoSchedule", [$("#autoSignInUsername").val(), $("#autoSignInPassword").val()]);
 		// DOM Stuff
 		// TODO add "loading" message
+		$("#autoSignInBtn").addClass("is-hidden");
 		$("#autoSignInModalCloseBtn").addClass("is-invisible");
 		$("#autoSignInPassword").prop("disabled", true);
 		$("#autoSignInUsername").prop("disabled", true);
@@ -97,12 +120,6 @@ function populateTable (courseInfo) {
 	debug && console.log("Storing " + courseInfo.name + " into masterSched...");
 	
 	// First, convert all the times to distance learning (DL) times
-	var modTimeConversion = {1: "7:30", 2: "7:45", 3: "8:00", 4: "8:15", 5: "8:30", 6: "8:45", 7: "9:00", 8: "9:15", 9: "9:30", 10: "9:45",
-	11: "10:00", 12: "10:15", 13: "10:30", 14: "10:45", 15: "11:00", 16: "11:15", 17: "11:30", 18: "11:45", 19: "12:00", 20: "12:15", 21: "12:30",
-		22: "12:45", 23: "1:00", 24: "1:15", 25: "1:30", 26: "1:45", 27: "2:00", 28: "2:15", 29: "2:30", 30: "2:45", 31: "3:00", 32: "3:15", 33: "3:30"};
-	var DLmodTimeConversion = {1: "9:00", 2: "9:10", 3: "9:20", 4: "9:30", 5: "9:40", 6: "9:50", 7: "10:00", 8: "10:10", 9: "10:20", 10: "10:30",
-	11: "10:40", 12: "10:50", 13: "11:00", 14: "11:10", 15: "11:20", 16: "11:30", 17: "11:40", 18: "11:50", 19: "12:00", 20: "12:10", 21: "12:20",
-	22: "12:30", 23: "12:40", 24: "12:50", 25: "1:00", 26: "1:10", 27: "1:20", 28: "1:30", 29: "1:40", 30: "1:50", 31: "2:00", 32: "2:10", 33: "2:20"};
 	var startMod = +_.invert(modTimeConversion)[courseInfo.start], // Convert, for example, "10:45" to 14 (the number 14, not "14")
 		// The end mod is actually one less than the user input. (7:30-8:30 is 4 mods, but selecting 8:30 on the website is a 5th mod, 8:30-8:45)
 		endMod = +_.invert(modTimeConversion)[courseInfo.end] - 1;
@@ -134,6 +151,7 @@ function resetMasterSched () {
 		for (var j = 0; j < masterSched[i].length; j++) {
 			$("td." + conversionTable[i] + "Col.mod" + j)
 				.css("backgroundColor", "")
+				.removeClass("noBorder")
 				.data("courseName", "").data("backgroundColorAlpha", "")
 				.find(".schedModTextContainer").text("");
 		}
@@ -153,6 +171,7 @@ function displayMasterSched () {
 			if (typeof masterSched[i][j].name != "undefined") {
 				// If the course info object exists for this iteration of masterSched, then there is a course during this time
 				// TODO comment this
+				$("td." + conversionTable[i] + "Col.mod" + j).addClass("noBorder");
 				$("td." + conversionTable[i] + "Col.mod" + j).data("courseName", masterSched[i][j].name);
 				$("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha", "1");
 
@@ -213,7 +232,35 @@ if (debug) {
 // });
 
 // Socket IO Retrieving Student Data
-socket.on("studentSchedData", function receivedSchedData(data) {
-	// Handle login -- close modal TODO
+socket.on("studentSchedData", function receivedSchedData (data) {
 	console.log(data);
+	if (data[0] === "success") {
+		// Populate fields on screen
+		for (var i = 0; i < data[1].length; i++) {
+			$(".oneCourseGroup:last").find(".courseName").val(data[1][i][0]);
+			// We can't pull the subject from myBackpack
+			
+			// If start and end time mods are given, then populate those fields
+			if (data[1][i][1]) {
+				if (data[1][i][1].length >= 2) {
+					$(".oneCourseGroup:last").find(".courseStartTimeDropdown").val(modTimeConversionAMPM[ data[1][i][1][0] ]);
+					$(".oneCourseGroup:last").find(".courseEndTimeDropdown").val(modTimeConversionAMPM[ data[1][i][1][1] + 1 ]); // 2:15 --> 2:30
+				}
+			}
+			// If there's still another course to add, click "add course"
+			if (i < data[1].length - 1) {
+				$("#addCourseBtn").click();
+			}
+		}
+
+		// Run form validation
+		// TODO
+
+		// Hide modal
+		$(".modal").removeClass("is-active");
+	} else {
+		// Login failed, hide modal and tell user it failed
+		$(".modal").removeClass("is-active");
+		$("#signInInfoText").text("The import failed :( Super sorry about that! Please enter your schedule information below:");
+	}
 });

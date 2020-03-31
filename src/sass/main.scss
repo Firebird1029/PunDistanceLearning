@@ -8,10 +8,14 @@ p.spacer {
 }
 
 #scheduleTable {
+	// TODO let user decide border or not
 	th.schedModTimeHeader {
-		border: none;
+		// border: none;
 	}
 	td {
+		// border: none;
+	}
+	td.noBorder {
 		border: none;
 	}
 }
@@ -33,7 +37,7 @@ p.spacer {
 		// -moz-transform: translateY(3rem);
 		// -ms-transform: translateY(3rem);
 		// -o-transform: translateY(3rem);
-		transform: translateY(100%);
+		transform: translateY(70%); // TODO make 100% when fix that stupid z-index/transform glitch
 	}
 }
 

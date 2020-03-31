@@ -1,5 +1,5 @@
 "use strict"; /* eslint-env node */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
-var debug = false;
+var debug = true;
 
 /*
  * Notes
@@ -15,7 +15,7 @@ var debug = false;
 var express = require("express"),
 	app = express(),
 	server = app.listen(process.env.PORT || (process.argv[2] || 8000), function expressServerListening () {
-		console.log(server.address());
+		debug && console.log(server.address());
 	}),
 
 	// Express Middleware
@@ -123,16 +123,16 @@ function extractDataFromTable(callback) {
 						.then(response => {
 							getDataFromTable(response, value, function(data) {
 								nightmare.end();
-								callback(data);
+								callback(["success", data]);
 							});
 							
 						})
 						.catch(error => {
-							console.error("Error: ", error);
+							debug && console.error("Error: ", error);
 						})
 				})
 				.catch(error => {
-					console.error("Error: ", error);
+					debug && console.error("Error: ", error);
 				})
 			})
 }
@@ -161,10 +161,10 @@ function getStudentDataViaNightmare (username, password, callback) {
 				extractDataFromTable(callback);
 			} else {
 				// Failed login
-				callback("failedLogin");
+				callback(["fail", "failedLogin"]);
 			}
 		})
 		.catch(error => {
-			console.error("Error: ", error);
+			debug && console.error("Error: ", error);
 		});
 }
