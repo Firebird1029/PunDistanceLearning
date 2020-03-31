@@ -56,38 +56,38 @@ listener.sockets.on("connection", function connectionDetected (socket) {
 
 // Use cheerio to process schedule data and find breaks
 function getDataFromTable(html, val, callback) {
-	var data = [[],[],[],[],[],[]];
-	const $ = cheerio.load(html);
-
-	var data = [[],[],[],[],[],[]];
-	console.log($(".dataTableOdd"))
-	console.log($("table.dataTableOdd > tbody > tr > td > table.dataTable > tbody").children().length)
-
-	callback(data);
-	// for (var i = 1; i < 33; i++) {
-	// 	for (var j = 2; j < 8; j++) {
-	// 		var currentCell = $("td.screenCell tbody:nth-child(2) tr:nth-child(" + i + ")" + " td:nth-child(" + j + ")");
-	// 		/* If there is more than 1 <br> in the <td> then there is a class in that particular cell
-	// 		 * Push a 1 into the array if you have a class, a 0 if you don't
-	// 		 */
-	// 		if (currentCell.children().length > 1) {
-	// 			var text = currentCell.html()
-	// 			data[j - 2].push(text.split("<")[0].substring(text.indexOf(' ')+1));
-	// 		} else {
-	// 			data[j - 2].push(0);
-	// 		}
-	// 	}
-	// }
+	var $ = cheerio.load(html);
+	var $table = $("table.dataTableOdd > tbody > tr > td > table.dataTable > tbody"); // Table that stores course info
+	var len = $table.children().length; // Amount of courses
+	var data = [];
+	for (var i = 1; i < len; i++) {
+		var courseName = $(`table.dataTableOdd > tbody > tr > td > table.dataTable > tbody > tr:nth-child(${i + 1}) > td:nth-child(1)`).text().replace(/(\r\n|\n|\r)/gm,"");
+		// Do not include any unecessary classes such as chapel
+		if (courseName != "CLASS DEANS\' EMAIL" && courseName != "CITIZENSHIP CITIZENSHIP" && courseName != "AP-12" 
+		&& courseName != "AP-11" && courseName != "AP-10" && courseName != "AP-9" && courseName != "ASSEM 12" 
+		&& courseName != "ASSEM 11" && courseName != "ASSEM 10" && courseName != "ASSEM 9" && courseName != "CHAPEL 12" 
+		&& courseName != "CHAPEL 11" && courseName != "CHAPEL 10" && courseName != "CHAPEL 9") {
+			// Create a new array that stores the course name and time.
+			data.push([courseName]);
+			for (var j = 0; j < 6; j++) {
+				var courseMeetingTime = parseInt($(`table.dataTableOdd > tbody > tr > td > table.dataTable > tbody > tr:nth-child(${i + 1}) > td:nth-child(${6 + j})`).text().split("-")[0]);
+				// Check if the time is already in the array or if the meeting time is a break
+				if (!isNaN(courseMeetingTime) && courseMeetingTime != data[data.length - 1][data[data.length - 1].length - 1]) {
+					data[data.length - 1].push(courseMeetingTime);
+				}
+			}
+		}
+	}
 	callback(data);
 }
 
+// Pull the schedule data from the correct table
 function extractDataFromTable(callback) {
 	nightmare
 		.wait("a[href='https://mybackpack.punahou.edu/SeniorApps/studentParent/schedule.faces?selectedMenuId=true']")
 		.click("a[href='https://mybackpack.punahou.edu/SeniorApps/studentParent/schedule.faces?selectedMenuId=true']")
 		.wait("select")
 		.evaluate(function(){
-			console.log("HEY!");
 			for (var i = 0; i < document.querySelector("select").children.length; i++) {
 				if (document.querySelector("select").children[i].innerHTML == "Punahou Academy") {
 					return document.querySelector("select").children[i].value;
@@ -143,7 +143,7 @@ function getStudentDataViaNightmare (username, password, callback) {
 		.type('input[id="form:userId"]', username)
 		.type('input[id="form:userPassword"]', password)
 		.click('input[name="form:signIn"]')
-		.wait(2000)
+		.wait(3000)
 		.evaluate(function() {
 			if (document.getElementById("form:errorMsgs") == null) {
 				return true;
@@ -165,7 +165,7 @@ function getStudentDataViaNightmare (username, password, callback) {
 }
 
 console.log("Nightmare!");
-getStudentDataViaNightmare("jtay20", "yellow2Kite!", print);
+getStudentDataViaNightmare("", "!", print);
 
 function print(data) {
 	console.log(data);
