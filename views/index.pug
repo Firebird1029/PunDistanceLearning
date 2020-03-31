@@ -123,9 +123,10 @@ html(lang="en")
 								p.spacer
 								//- center align this form below
 								form.form#makeScheduleForm
-									.field.is-grouped.is-grouped-centered
+									.field
 										.control
 											button.button.is-success#createSchedBtn Create Schedule!
+										p.help.is-invisible#formErrorsNotice Looks like you forgot to fill out some fields. Scroll back up to find the empty boxes.
 						#tableScreen.is-hidden
 							section.section
 								//- .container.has-text-right.content
@@ -169,6 +170,9 @@ html(lang="en")
 												- i++
 					.column#rightSidebar
 						p.spacer
+						p.spacer
+						button.button#makePDFButton.is-hidden Convert to PDF
+						p.spacer
 						.oneColorPickerGroup.oneColorPickerGroupBlank.is-hidden
 							.box
 								.level
@@ -176,7 +180,6 @@ html(lang="en")
 										.level-item.colorPickerCourseName
 									.level-right
 										.level-item.colorPickerContainer
-						button.button#makePDFButton.is-hidden Convert to PDF
 							
 
 		//- Footer

@@ -185,10 +185,12 @@ function compileWebForm () {
 		$("#footerContainer").removeClass("is-hidden");
 	} else {
 		$(".courseFormField").removeClass("is-danger");
+		$("#formErrorsNotice").addClass("is-invisible");
 		for (var i = 0; i < incompleteInput.length; i++) {
 			incompleteInput[i].addClass("is-danger");
 		}
 		$("#createSchedBtn").animateCSS("wobble");
+		$("#formErrorsNotice").removeClass("is-invisible");
 	}
 }
 
@@ -390,9 +392,9 @@ function createPDF() {
 	$("#makePDFButton").html(`<i class="fas fa-spinner fa-spin"></i>`);
 	const filename  = 'table1.pdf';
 	// var quality = 1;
-	html2canvas(document.getElementById("scheduleTable"), {scale: 1}).then(canvas => {
-		let pdf = new jsPDF('p', 'mm', 'a4');
-		pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 190, 295);
+	html2canvas(document.getElementById("scheduleTable"), {scale: 2}).then(canvas => {
+		let pdf = new jsPDF('p', 'mm', 'letter');
+		pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 185, 295);
 		pdf.save(filename);
 		$("#makePDFButton").html("Convert to PDF");
 	});
