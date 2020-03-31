@@ -227,7 +227,7 @@ if (debug) {
 	$(".oneCourseGroup:last").find(".courseStartTimeDropdown").val("2:30 PM");
 	$(".oneCourseGroup:last").find(".courseEndTimeDropdown").val("3:30 PM");
 
-	$("#doMagicBtn").click();
+	$("#createSchedBtn").click();
 }
 // });
 
