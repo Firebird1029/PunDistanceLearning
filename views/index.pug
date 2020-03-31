@@ -170,15 +170,16 @@ html(lang="en")
 													
 
 												- i++
-							p Office Hours: 
-								p English, Social Studies, PE, Theatre
-								p 9 AM to 11 AM
-								p Math, Art, Music, DT
-								p 11 AM to 1 PM
-								p Science, World Languages, S+Well, JROTC
-								p 1:30-3:30
+							h4.title.is-h4 Office Hours: 
+							p 9 AM to 11 AM, every day: English, Social Studies, PE, and Theatre
+							p 11 AM to 1 PM, every day: Math, Art, Music, DT
+							p 1:30 PM to 3:30 PM: Science, World Languages, S+Well, JROTC
+							p.spacer
+							p Use office hours to video call your teacher and catch up homework/chat.
 					.column#rightSidebar
 						p.spacer
+						p.spacer
+						button.button#restartBtn.is-hidden(onclick="localStorage.clear(); window.location.reload();") Restart
 						p.spacer
 						button.button#makePDFButton.is-hidden Convert to PDF
 						p.help#makePDFButtonHelper.is-hidden (Experimental)

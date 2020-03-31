@@ -246,7 +246,7 @@ function resetMasterSched () {
 function displayMasterSched () {
 	debug && console.log("Displaying master sched...");
 	$("#tableScreen").removeClass("is-hidden");
-	$("#makePDFButton, #makePDFButtonHelper").removeClass("is-hidden");
+	$("#makePDFButton, #makePDFButtonHelper, #restartBtn").removeClass("is-hidden");
 	resetMasterSched();
 	var middleMod; // The middle mod between the start and end mod. Will be explained later inside the function.
 	// i is the column, j is the row of the DOM schedule table that corresponds with masterSched
