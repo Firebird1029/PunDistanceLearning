@@ -105,7 +105,8 @@ $("#makeScheduleForm").on("submit", (e) => {
 function compileWebForm () {
 	var $el, courseName, courseSubject, courseStartTime, courseEndTime;
 	masterSched = _.cloneDeep(masterSchedLayout); // Reset masterSched object so we can put courses in
-
+	var checkFill = true;
+	var incompleteInput = [];
 	// Loop through every grouping of form fields that represent a course.
 	$(".oneCourseGroup").not(".oneCourseGroupBlank").each((index, element) => {
 		$el = $(element);
@@ -113,12 +114,55 @@ function compileWebForm () {
 		courseSubject = $el.find(".courseSubjectDropdown").find(":selected").text(),
 		courseStartTime = $el.find(".courseStartTimeDropdown").find(":selected").text(),
 		courseEndTime = $el.find(".courseEndTimeDropdown").find(":selected").text();
+
+		if (courseName == "") {
+			checkFill = false;
+			incompleteInput.push($el.find(".courseName"));
+		} 
+		if (courseSubject == "Select:") {
+			checkFill = false;
+			incompleteInput.push($el.find(".courseSubjectDropdown").parent());
+		} 
+		if (courseStartTime == "Select:") {
+			checkFill = false;
+			incompleteInput.push($el.find(".courseStartTimeDropdown").parent());
+		} 
+		if (courseStartTime == "Select:") {
+			console.log("no start time");
+			checkFill = false;
+			incompleteInput.push($el.find(".courseStartTimeDropdown").parent());
+		} 
+		if (courseEndTime == "Select:") {
+			checkFill = false;
+			incompleteInput.push($el.find(".courseEndTimeDropdown").parent());
+		}
+
+		var startMod = +_.invert(modTimeConversion)[courseStartTime.slice(0, -3)], // Convert, for example, "10:45" to 14 (the number 14, not "14")
+			// The end mod is actually one less than the user input. (7:30-8:30 is 4 mods, but selecting 8:30 on the website is a 5th mod, 8:30-8:45)
+			endMod = +_.invert(modTimeConversion)[courseEndTime.slice(0, -3)];
+
+		if (endMod <= startMod) {
+			console.log("hello!");
+			checkFill = false;
+			incompleteInput.push($el.find(".courseStartTimeDropdown").parent());
+			incompleteInput.push($el.find(".courseEndTimeDropdown").parent());
+		}
+
 		// Send an object of information about the course to the function populateTable which populates the DOM table.
 		// By the way, need to .slice(0, -3) to remove " AM" or " PM" from the start and end times.
 		populateTable({"name": courseName, "subject": courseSubject, "start": courseStartTime.slice(0, -3), "end": courseEndTime.slice(0, -3)});
+		
 	});
-	// TODO add artifical loading bar LOL
-	displayMasterSched();
+	
+	if (checkFill === true) {
+		// TODO add artifical loading bar LOL
+		displayMasterSched();
+	} else {
+		for (var i = 0; i < incompleteInput.length; i++) {
+			console.log(incompleteInput[i]);
+			incompleteInput[i].addClass("is-danger");
+		}
+	}
 }
 
 function populateTable (courseInfo) {
