@@ -2,9 +2,9 @@ doctype html
 html(lang="en")
 	include includes/head.pug
 	body
-		.container.has-text-centered
-			h1.title.is-1(style="padding-top: 1rem;")#title Pun Schedule
-			p#funMessage.is-italic
+		#title: .container.has-text-centered
+			h1.title.is-1(style="padding-top: 1rem;") Pun Schedule
+			p#funMessage.is-italic(style="padding-top: 1rem")
 			p.spacer
 		article.article
 			include includes/body.pug
@@ -12,6 +12,8 @@ html(lang="en")
 				#startScreen
 					.columns
 						.column.is-full.has-text-centered
+							p.spacer
+							p Warning: This tool is NOT mobile-friendly. Please try it on your computer!
 							button.button#showMakeScheduleScreen Make My Schedule!
 				.columns
 					.column.is-three-quarters#mainColumn
