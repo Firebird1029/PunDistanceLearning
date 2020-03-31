@@ -4,15 +4,70 @@ html(lang="en")
 	body
 		section.hero.is-full-height
 			.hero-head
-				include includes/nav.pug
+				//- include includes/nav.pug
 			.hero-body
 				.container.has-text-centered
 					h1.title.is-1(style="padding-top: 1rem;") Distance Learning Schedule Maker
 			.hero-foot
 		article.article
 			include includes/body.pug
-			+section("Test")
-				button.button Make My Schedule!
+			.columns
+				.column.is-three-quarters#mainColumn
+					#startScreen
+						+section()
+							button.button Make My Schedule!
+					#makeScheduleScreen.is-hidden
+						+section()
+							button.button.is-success Auto Sign-in to Punahou
+							p Or manually enter your schedule information below:
+							#SchedFormCourses
+								.makeSchedFormOneCourseGroup
+									.field
+										label.label Class Name
+										.control
+											input.input(type="text", placeholder="i.e. English IV")
+									.columns
+										.column
+											.field
+												label.label Subject
+												.control
+													.select
+														select
+															option Select dropdown
+															option languageed
+															option mathhd
+										.column
+											.field
+												label.label Class Start Time
+												.control
+													.select
+														select
+															option Select dropdown
+															option 7:30
+															option 8:00
+												p.help Use regular school time, aka before Spring Break
+											.field
+												label.label Class End Time
+												.control
+													.select
+														select
+															option Select dropdown
+															option 7:30
+															option 8:00
+												p.help Use regular school time, aka before Spring Break
+								p.spacer
+								.field
+									button.button.is-outlined#addCourseBtn + Add Class
+									//- TODO add font icon +
+							p.spacer
+
+							//- center align this form below
+							form.form#makeScheduleForm
+								.field.is-grouped
+									.control
+										button.button.is-link Do Magic!
+
+				.column#rightSidebar
 
 		//- Footer
 		include includes/footer.pug
