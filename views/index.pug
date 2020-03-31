@@ -125,7 +125,7 @@ html(lang="en")
 								form.form#makeScheduleForm
 									.field
 										.control
-											button.button.is-success#createSchedBtn Create Schedule!
+											button.button.is-link#createSchedBtn Create Schedule!
 										p.help.is-invisible#formErrorsNotice Looks like you forgot to fill out some fields. Scroll back up to find the empty boxes.
 						#tableScreen.is-hidden
 							section.section
@@ -176,8 +176,8 @@ html(lang="en")
 						.oneColorPickerGroup.oneColorPickerGroupBlank.is-hidden
 							.box
 								.level
-									.level-left
-										.level-item.colorPickerCourseName
+									.level-left(style="max-width: 80%")
+										.level-item.colorPickerCourseName(style="max-width: 80%")
 									.level-right
 										.level-item.colorPickerContainer
 							
