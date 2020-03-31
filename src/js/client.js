@@ -1,5 +1,5 @@
 "use strict"; /* eslint-env browser */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
-const debug = false;
+const debug = true;
 
 // These 2 functions are in case the course name is too long
 // https://stackoverflow.com/questions/14484787/wrap-text-in-javascript
