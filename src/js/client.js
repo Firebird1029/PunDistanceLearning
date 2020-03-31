@@ -62,6 +62,7 @@ var colors = ["#FF0C00", "#D58AEB", "#949FFF", "#8AE5EB", "#87FF9B", "#2D3319", 
 
 // Start Screen
 $("#showMakeScheduleScreen").click(() => {
+	$("#showMakeScheduleScreen").addClass("is-hidden");
 	$("#startScreen").addClass("is-hidden");
 	$("#makeScheduleScreen").removeClass("is-hidden");
 	$("#addCourseBtn").click();
@@ -232,6 +233,7 @@ function resetMasterSched () {
 function displayMasterSched () {
 	debug && console.log("Displaying master sched...");
 	$("#tableScreen").removeClass("is-hidden");
+	$("#makePDFButton").removeClass("is-hidden");
 	resetMasterSched();
 	var middleMod; // The middle mod between the start and end mod. Will be explained later inside the function.
 	// i is the column, j is the row of the DOM schedule table that corresponds with masterSched
@@ -385,8 +387,11 @@ function createPDF() {
 	// var quality = 1;
 	html2canvas(document.getElementById("scheduleTable"), {scale: 1}).then(canvas => {
 		let pdf = new jsPDF('p', 'mm', 'a4');
-		pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 200, 290);
+		pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 190, 295);
 		pdf.save(filename);
 	});
 }
 
+$("#makePDFButton").click(function() {
+	createPDF();
+});
