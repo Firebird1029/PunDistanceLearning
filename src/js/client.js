@@ -23,7 +23,7 @@ var masterSched = _.cloneDeep(masterSchedLayout);
 	// 	$(".navbar-burger").toggleClass("is-active");
 	// 	$(".navbar-menu").toggleClass("is-active");
 	// });
-	
+
 // Start Screen
 $("#showMakeScheduleScreen").click(() => {
 	$("#startScreen").addClass("is-hidden");
@@ -35,16 +35,22 @@ $("#showMakeScheduleScreen").click(() => {
 $("#autoSignInBtn").click(() => {
 	$("#autoSignInModal").addClass("is-active");
 });
+$(".modal-close, .modal-background").click(() => {
+	// TODO unbind onclick after #autoSignInLoginBtn clicked
+	$(".modal").removeClass("is-active");
+})
 
 // Auto-Sign In DOM Code
 $("#autoSignInLoginBtn").click(() => {
-	$("#autoSignInModalCloseBtn").addClass("is-invisible");
 	// Check that both username and password are not blank
 	if ($("#autoSignInUsername").val() != "" && $("#autoSignInPassword").val() != "") {
 		socket.emit("autoSchedule", [$("#autoSignInUsername").val(), $("#autoSignInPassword").val()]);
-		// Empty input fields
-		$("#autoSignInPassword").addClass("is-disabled");
-		$("#autoSignInUsername").addClass("is-disabled");
+		// DOM Stuff
+		// TODO add "loading" message
+		$("#autoSignInModalCloseBtn").addClass("is-invisible");
+		$("#autoSignInPassword").prop("disabled", true);
+		$("#autoSignInUsername").prop("disabled", true);
+		$("#autoSignInLoginBtn").prop("disabled", true);
 	}
 });
 
@@ -69,6 +75,8 @@ $("#makeScheduleForm").on("submit", (e) => {
 
 function compileWebForm () {
 	var $el, courseName, courseSubject, courseStartTime, courseEndTime;
+	masterSched = _.cloneDeep(masterSchedLayout); // Reset masterSched object so we can put courses in
+
 	// Loop through every grouping of form fields that represent a course.
 	$(".oneCourseGroup").not(".oneCourseGroupBlank").each((index, element) => {
 		$el = $(element);
@@ -124,7 +132,10 @@ function populateTable (courseInfo) {
 function resetMasterSched () {
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
-			$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", "").find(".schedModTextContainer").text("");
+			$("td." + conversionTable[i] + "Col.mod" + j)
+				.css("backgroundColor", "")
+				.data("courseName", "").data("backgroundColorAlpha", "")
+				.find(".schedModTextContainer").text("");
 		}
 	}
 }
@@ -142,16 +153,16 @@ function displayMasterSched () {
 			if (typeof masterSched[i][j].name != "undefined") {
 				// If the course info object exists for this iteration of masterSched, then there is a course during this time
 				// TODO comment this
-				$("td." + conversionTable[i] + "Col.mod" + (j)).data("courseName", masterSched[i][j].name);
-				$("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha", "1");
+				$("td." + conversionTable[i] + "Col.mod" + j).data("courseName", masterSched[i][j].name);
+				$("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha", "1");
 
 				// Algorithm: So basically, the name of the course must be displayed in the vertical center of a course "block".
 				// We need to calculate a way to determine which mod and which cell of the DOM table is the center of the course "block".
 				middleMod = masterSched[i][j].startMod + Math.floor((masterSched[i][j].endMod - masterSched[i][j].startMod) / 2);
 				if (j === middleMod) {
 					// If this mod is the middle mod, then add text to it
-					$("td." + conversionTable[i] + "Col.mod" + (j)).find(".schedModTextContainer").text(masterSched[i][j].name); // TODO text half-"block" lower!
-					$("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha", "1");
+					$("td." + conversionTable[i] + "Col.mod" + j).find(".schedModTextContainer").text(masterSched[i][j].name); // TODO text half-"block" lower!
+					$("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha", "1");
 				}
 			}
 		}
@@ -203,5 +214,6 @@ if (debug) {
 
 // Socket IO Retrieving Student Data
 socket.on("studentSchedData", function receivedSchedData(data) {
+	// Handle login -- close modal TODO
 	console.log(data);
 });
