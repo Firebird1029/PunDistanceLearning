@@ -4,7 +4,8 @@ html(lang="en")
 	body
 		.container.has-text-centered
 			h1.title.is-1(style="padding-top: 1rem;") Pun Schedule
-			p#funMessage
+			p
+			p#funMessage.is-italic
 			p.spacer
 		article.article
 			include includes/body.pug
@@ -35,22 +36,23 @@ html(lang="en")
 													.control
 														input.input#autoSignInPassword(type="password")
 												button.button.is-link#autoSignInLoginBtn Login
+												p.help.is-hidden#waitingText Please wait for ten seconds. In the meantime, try this riddle: A man lives on the top floor of a hotel. When he is out with a friend or out on a rainy day, he comes back, goes to the elevator, and goes to the top floor. When he goes out alone or on a sunny day, he goes half way up and walks the rest of the way up. Why?
 									button.modal-close.is-large#autoSignInModalCloseBtn
 								p.spacer
-								p#signInInfoText Or manually enter your schedule information below:
+								p.title.is-6#signInInfoText Or manually enter your schedule information below:
 								#SchedFormCourses
 									.oneCourseGroupBlank.oneCourseGroup.box.is-hidden
 										.container(style="padding-right: 1rem;").has-text-right: a.deleteCourseBtn: +icon("fa-times")
 										.field
 											label.label Class Name
 											.control
-												input.input.courseName(type="text", placeholder="i.e. English")
+												input.input.courseName.courseFormField(type="text", placeholder="i.e. English")
 										.columns
 											.column
 												.field
 													label.label Subject
 													.control
-														.select
+														.select.courseFormField
 															select.courseSubjectDropdown
 																option Select:
 																option World Languages
@@ -69,7 +71,7 @@ html(lang="en")
 												.field
 													label.label Class Regular Start Time
 													.control
-														.select
+														.select.courseFormField
 															select.courseStartTimeDropdown
 																option Select:
 																option 7:30 AM
@@ -93,7 +95,7 @@ html(lang="en")
 												.field
 													label.label Class Regular End Time
 													.control
-														.select
+														.select.courseFormField
 															select.courseEndTimeDropdown
 																option Select:
 																option 7:30 AM
@@ -179,4 +181,5 @@ html(lang="en")
 							
 
 		//- Footer
-		include includes/footer.pug
+		#footerContainer.is-hidden
+			include includes/footer.pug

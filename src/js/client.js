@@ -89,7 +89,7 @@ $("#autoSignInLoginBtn").click(() => {
 		$("#autoSignInLoginBtn").animateCSS("pulse");
 		socket.emit("autoSchedule", [$("#autoSignInUsername").val(), $("#autoSignInPassword").val()]);
 		// DOM Stuff
-		// TODO add "loading" message
+		$("#waitingText").removeClass("is-hidden");
 		$("#autoSignInBtn").addClass("is-hidden");
 		$("#autoSignInModalCloseBtn").addClass("is-invisible");
 		$("#autoSignInPassword").prop("disabled", true);
@@ -121,7 +121,6 @@ $(".deleteCourseBtn").click(function () {
 // Submit Make Schedule Form
 $("#makeScheduleForm").on("submit", (e) => {
 	e.preventDefault();
-	// TODO -- validate form!! need to validate form cuz i need all fields filled out! make sure nothing overlapping etc.
 	compileWebForm();
 });
 
@@ -141,19 +140,15 @@ function compileWebForm () {
 		if (courseName == "") {
 			checkFill = false;
 			incompleteInput.push($el.find(".courseName"));
-		} 
+		}
 		if (courseSubject == "Select:") {
 			checkFill = false;
 			incompleteInput.push($el.find(".courseSubjectDropdown").parent());
-		} 
+		}
 		if (courseStartTime == "Select:") {
 			checkFill = false;
 			incompleteInput.push($el.find(".courseStartTimeDropdown").parent());
-		} 
-		if (courseStartTime == "Select:") {
-			checkFill = false;
-			incompleteInput.push($el.find(".courseStartTimeDropdown").parent());
-		} 
+		}
 		if (courseEndTime == "Select:") {
 			checkFill = false;
 			incompleteInput.push($el.find(".courseEndTimeDropdown").parent());
@@ -168,18 +163,28 @@ function compileWebForm () {
 			incompleteInput.push($el.find(".courseStartTimeDropdown").parent());
 			incompleteInput.push($el.find(".courseEndTimeDropdown").parent());
 		}
-
-		// Send an object of information about the course to the function populateTable which populates the DOM table.
-		// By the way, need to .slice(0, -3) to remove " AM" or " PM" from the start and end times.
-		populateTable({"name": courseName, "subject": courseSubject, "start": courseStartTime.slice(0, -3), "end": courseEndTime.slice(0, -3)});
-		
 	});
 	
 	if (checkFill === true) {
 		// TODO add artifical loading bar LOL
+		// Loop through every grouping of form fields that represent a course.
+		$(".oneCourseGroup").not(".oneCourseGroupBlank").each((index, element) => {
+			$el = $(element);
+			courseName = $el.find(".courseName").val(),
+			courseSubject = $el.find(".courseSubjectDropdown").find(":selected").text(),
+			courseStartTime = $el.find(".courseStartTimeDropdown").find(":selected").text(),
+			courseEndTime = $el.find(".courseEndTimeDropdown").find(":selected").text();
+
+			// Send an object of information about the course to the function populateTable which populates the DOM table.
+			// By the way, need to .slice(0, -3) to remove " AM" or " PM" from the start and end times.
+			populateTable({"name": courseName, "subject": courseSubject, "start": courseStartTime.slice(0, -3), "end": courseEndTime.slice(0, -3)});
+			
+		});
 		displayMasterSched();
 		$("#makeScheduleScreen").addClass("is-hidden");
+		$("#footerContainer").removeClass("is-hidden");
 	} else {
+		$(".courseFormField").removeClass("is-danger");
 		for (var i = 0; i < incompleteInput.length; i++) {
 			incompleteInput[i].addClass("is-danger");
 		}
@@ -370,15 +375,12 @@ socket.on("studentSchedData", function receivedSchedData (data) {
 			}
 		}
 
-		// Run form validation
-		// TODO
-
 		// Hide modal
 		$(".modal").removeClass("is-active");
 	} else {
 		// Login failed, hide modal and tell user it failed
 		$(".modal").removeClass("is-active");
-		$("#signInInfoText").text("The import failed :( Super sorry about that! Please enter your schedule information below:");
+		$("#signInInfoText").text("The import failed :( Super sorry about that! Please enter your schedule information below:").animateCSS("flash");
 	}
 });
 
