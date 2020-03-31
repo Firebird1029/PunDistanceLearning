@@ -244,11 +244,15 @@ function displayMasterSched () {
 				$("td." + conversionTable[i] + "Col.mod" + j).data("courseName", masterSched[i][j].name);
 				if (!colorSets.hasOwnProperty([masterSched[i][j].name])) {
 					colorSets[masterSched[i][j].name] = colors.pop();
-					$("#rightSidebar").append(`<div class='box' data-course='${masterSched[i][j].name}'><input class='colorPicker' 
-					value="${colorSets[masterSched[i][j].name]}"></div>`);
-					new jscolor($(".colorPicker")[$(".colorPicker").length - 1]);
+					// $("#rightSidebar").append(`<div class='box' data-course='${masterSched[i][j].name}'><input class='colorPicker' 
+					// value="${colorSets[masterSched[i][j].name]}"></div>`);
+					$(".oneColorPickerGroupBlank").clone(true, true).removeClass("oneColorPickerGroupBlank is-hidden").insertAfter(".oneColorPickerGroup:last");
+					$(".oneColorPickerGroup:last").find(".box").data("courseColor", masterSched[i][j].name);
+					$(".oneColorPickerGroup:last").find(".colorPickerCourseName").text(masterSched[i][j].name);
+					$(".oneColorPickerGroup:last").find(".colorPickerContainer").append(`<input class="colorPicker" value="${colorSets[masterSched[i][j].name]}">`);
+					new jscolor($(".oneColorPickerGroup:last").find(".colorPicker").get(0));
 					$(".colorPicker").on("change", function(event) {
-						colorSets[$(this).parent().attr("data-course")] = $(this).val();
+						colorSets[$(this).closest(".box").data("courseColor")] = $(this).val();
 						animateMasterSched();
 					});
 				}
@@ -280,7 +284,7 @@ function animateMasterSched () {
 			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha") || 0;
 			if (colorSets.hasOwnProperty(masterSched[i][j].name)) {
 				var rgb = hexToRgb(colorSets[masterSched[i][j].name]);
-				console.log(colorSets);
+				// console.log(colorSets);
 				$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alphaColor})`);
 			}
 
