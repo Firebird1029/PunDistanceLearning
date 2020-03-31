@@ -146,8 +146,10 @@ function getStudentDataViaNightmare (username, password, callback) {
 		.evaluate(function() {
 			if (document.getElementById("form:errorMsgs") == null) {
 				return true;
+				console.log("in")
 			} else {
 				return false;
+				console.log("not in")
 			}
 		})
 		.then(loggedIn => {
