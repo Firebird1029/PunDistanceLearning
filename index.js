@@ -136,7 +136,7 @@ function extractDataFromTable(nightmare, callback) {
 */
 function getStudentDataViaNightmare (username, password, callback) {
 	console.log(username);
-	let nightmare = new Nightmare({show: false, loadTimeout: 10000});
+	let nightmare = new Nightmare({show: false});
 	nightmare
 		.goto('https://mybackpack.punahou.edu/SeniorApps/facelets/registration/loginCenter.xhtml')
 		.wait('body')
