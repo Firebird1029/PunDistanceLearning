@@ -4,7 +4,7 @@ html(lang="en")
 	body
 		section.hero.is-full-height
 			.hero-head
-				include includes/nav.pug
+				//- include includes/nav.pug
 			.hero-body
 				.container.has-text-centered
 					h1.title.is-1(style="padding-top: 1rem;") 404: Page Not Found
@@ -12,7 +12,6 @@ html(lang="en")
 		article.article
 			include includes/body.pug
 			+section()
-				| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab iusto, error officiis unde, at dolorum nemo facere! Quidem maiores, placeat, non ea commodi aliquid aspernatur, velit odio, rem adipisci quas.
 
 		//- Footer
 		include includes/footer.pug
