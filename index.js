@@ -66,6 +66,7 @@ listener.sockets.on("connection", function connectionDetected (socket) {
 		socket.emit("refreshResponse", {});
 	});
 	socket.on("autoSchedule", function studentDataRequest(loginInfo) {
+		console.log("Socket io on server side");
 		getStudentDataViaNightmare(loginInfo[0], loginInfo[1], function(data) {
 			socket.emit("studentSchedData", data);
 		})
@@ -135,6 +136,7 @@ function extractDataFromTable(callback) {
  * The studentNum is the student's id number, which is used to select the correct schedule
 */
 function getStudentDataViaNightmare (username, password, callback) {
+	console.log("trying to get student data")
 	nightmare = Nightmare({show: false});
 	nightmare
 		.goto('https://mybackpack.punahou.edu/SeniorApps/facelets/registration/loginCenter.xhtml')

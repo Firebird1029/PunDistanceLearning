@@ -82,6 +82,7 @@ $("#autoSignInLoginBtn").click(() => {
 	if ($("#autoSignInUsername").val() != "" && $("#autoSignInPassword").val() != "") {
 		$("#autoSignInLoginBtn").html(`<i class="fas fa-spinner fa-spin"></i>`)
 		$("#autoSignInLoginBtn").animateCSS("pulse");
+		console.log("Sending data!!!", [$("#autoSignInUsername").val(), $("#autoSignInPassword").val()]);
 		socket.emit("autoSchedule", [$("#autoSignInUsername").val(), $("#autoSignInPassword").val()]);
 		// DOM Stuff
 		// TODO add "loading" message
