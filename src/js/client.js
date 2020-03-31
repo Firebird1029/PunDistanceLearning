@@ -235,6 +235,7 @@ function resetMasterSched () {
 				.find(".schedModTextContainer").text("");
 		}
 	}
+	$(".optionalOfficeHoursCol").addClass("is-hidden");
 	$("th.schedModTimeHeader").removeClass(".no-border");
 	$(".oneColorPickerGroup").not(".oneColorPickerGroupBlank").remove();
 }

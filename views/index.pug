@@ -2,8 +2,8 @@ doctype html
 html(lang="en")
 	include includes/head.pug
 	body
-		#title: .container.has-text-centered
-			h1.title.is-1(style="padding-top: 1rem;") Pun Schedule
+		.container.has-text-centered
+			//- h1.title.is-1(style="padding-top: 1rem;") Pun Schedule
 			p#funMessage.is-italic(style="padding-top: 1rem")
 			p.spacer
 		article.article
@@ -177,7 +177,7 @@ html(lang="en")
 						button.button#makePDFButton.is-hidden Convert to PDF
 						p.help#makePDFButtonHelper.is-hidden (Experimental)
 						p.spacer
-						.oneColorPickerGroup.oneColorPickerGroupBlank.is-hidden
+						.oneColorPickerGroup.oneColorPickerGroupBlank.is-hidden.has-text-left
 							.box
 								.level
 									.level-left(style="max-width: 80%")
