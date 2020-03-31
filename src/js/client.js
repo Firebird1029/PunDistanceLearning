@@ -397,6 +397,24 @@ function createPDF() {
 	});
 }
 
+
+// Lots of animate
 $("#makePDFButton").click(function() {
 	createPDF();
 });
+$("#autoSignInBtn").hover(function() {
+	$("#autoSignInBtn").animateCSS("pulse");
+});
+$("#createSchedBtn").hover(function() {
+	$("#createSchedBtn").animateCSS("tada");
+});
+$("#showMakeScheduleScreen").hover(function() {
+	$("#showMakeScheduleScreen").animateCSS("heartBeat");
+});
+$("#addCourseBtn").hover(function() {
+	$("#addCourseBtn").animateCSS("pulse");
+});
+$("#makePDFButton").hover(function() {
+	$("#makePDFButton").animateCSS("pulse");
+});
+
