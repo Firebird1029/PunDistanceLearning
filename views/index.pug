@@ -11,12 +11,13 @@ html(lang="en")
 			.hero-foot
 		article.article
 			include includes/body.pug
+			.columns
+				.column.is-full.has-text-centered
+					button.button#showMakeScheduleScreen Make My Schedule!
 			+section()
 				.columns
 					.column.is-three-quarters#mainColumn
 						#startScreen
-							+section()
-								button.button#showMakeScheduleScreen Make My Schedule!
 						#makeScheduleScreen.is-hidden
 							+section()
 								button.button.is-primary#autoSignInBtn Import from myBackpack
