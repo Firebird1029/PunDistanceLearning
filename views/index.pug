@@ -15,11 +15,11 @@ html(lang="en")
 				.column.is-full.has-text-centered
 					button.button#showMakeScheduleScreen Make My Schedule!
 			+section()
+				#startScreen
 				.columns
 					.column.is-three-quarters#mainColumn
-						#startScreen
 						#makeScheduleScreen.is-hidden
-							+section()
+							.container
 								button.button.is-primary#autoSignInBtn Import from myBackpack
 								.modal#autoSignInModal
 									.modal-background
@@ -143,7 +143,7 @@ html(lang="en")
 												th(style="text-align: center;") D
 												th(style="text-align: center;") E
 												th(style="text-align: center;") F
-												th(style="text-align: center;").optionalOfficeHoursCol Office Hours
+												th(style="text-align: center; width: 5rem;").optionalOfficeHoursCol Office Hours
 										tbody
 											- var i=1
 											- var DLmodTimeConversion = {1: "9:00", 2: "9:10", 3: "9:20", 4: "9:30", 5: "9:40", 6: "9:50", 7: "10:00", 8: "10:10", 9: "10:20", 10: "10:30", 11: "10:40", 12: "10:50", 13: "11:00", 14: "11:10", 15: "11:20", 16: "11:30", 17: "11:40", 18: "11:50", 19: "12:00", 20: "12:10", 21: "12:20", 22: "12:30", 23: "12:40", 24: "12:50", 25: "1:00", 26: "1:10", 27: "1:20", 28: "1:30", 29: "1:40", 30: "1:50", 31: "2:00", 32: "2:10", 33: "2:20"};
@@ -170,6 +170,7 @@ html(lang="en")
 
 												- i++
 					.column#rightSidebar
+						p.spacer
 						.oneColorPickerGroup.oneColorPickerGroupBlank.is-hidden
 							.box
 								.level

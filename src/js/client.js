@@ -225,6 +225,7 @@ function resetMasterSched () {
 		}
 	}
 	$("th.schedModTimeHeader").removeClass(".no-border");
+	$(".oneColorPickerGroup").not(".oneColorPickerGroupBlank").remove();
 }
 
 // Display Master Sched
@@ -265,15 +266,16 @@ function displayMasterSched () {
 				middleMod = masterSched[i][j].startMod + Math.floor((masterSched[i][j].endMod - masterSched[i][j].startMod) / 2);
 				if (j === middleMod) {
 					// If this mod is the middle mod, then add text to it
-					$("td." + conversionTable[i] + "Col.mod" + j).find(".schedModTextContainer").text(masterSched[i][j].name);
+					// $("td." + conversionTable[i] + "Col.mod" + j).find(".schedModTextContainer").text(masterSched[i][j].name);
+					$("td." + conversionTable[i] + "Col.mod" + j).find(".schedModTextContainer").html(wordWrap(masterSched[i][j].name, +$(".schedMod").eq(0).css("width").slice(0, -2)/9).replace(/(?:\r\n|\r|\n)/g, '<br>'));
 					// TODO text half-"block" lower!
-					// TODO test if 12 char word wrap is accurate for pun laptop! wordWrap(masterSched[i][j].name, 5)
+					// TODO test if 12 char word wrap is accurate for pun laptop!
 					$("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha", "1");
 				}
 			}
 		}
 	}
-
+	alert($(".schedMod").eq(0).css("width"))
 	animateMasterSched();
 	debug && console.log("Finished displaying master sched.");
 }

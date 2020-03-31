@@ -45,7 +45,10 @@ p.spacer {
 		// -moz-transform: translateY(3rem);
 		// -ms-transform: translateY(3rem);
 		// -o-transform: translateY(3rem);
-		transform: translateY(70%); // TODO make 100% when fix that stupid z-index/transform glitch
+		// transform: translateY(70%); // TODO make 100% when fix that stupid z-index/transform glitch
+		// transform: translateX(-10%);
+		// position: absolute;
+		font-weight: 800;
 	}
 }
 
