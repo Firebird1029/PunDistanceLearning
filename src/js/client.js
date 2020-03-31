@@ -226,6 +226,7 @@ function resetMasterSched () {
 // TODO ERROR IMPORTANT - MOD 32 (LAST MOD) DOESN'T SHOW UP!!!!
 function displayMasterSched () {
 	debug && console.log("Displaying master sched...");
+	$("#tableScreen").removeClass("is-hidden");
 	resetMasterSched();
 	var middleMod; // The middle mod between the start and end mod. Will be explained later inside the function.
 	// i is the column, j is the row of the DOM schedule table that corresponds with masterSched
@@ -238,13 +239,13 @@ function displayMasterSched () {
 				$("td." + conversionTable[i] + "Col.mod" + j).data("courseName", masterSched[i][j].name);
 				if (!colorSets.hasOwnProperty([masterSched[i][j].name])) {
 					colorSets[masterSched[i][j].name] = colors.pop();
-					$("#rightSidebar").append(`<div class='box' data-course='${masterSched[i][j].name}'><input class='jscolor colorPicker' 
+					$("#rightSidebar").append(`<div class='box' data-course='${masterSched[i][j].name}'><input class='colorPicker' 
 					value="${colorSets[masterSched[i][j].name]}"></div>`);
-
+					new jscolor($(".colorPicker")[$(".colorPicker").length - 1]);
 					$(".colorPicker").on("change", function(event) {
-						colorSets[$(this).parent().attr("data-course")] = "#" + $(this).val();
+						colorSets[$(this).parent().attr("data-course")] = $(this).val();
 						animateMasterSched();
-					})
+					});
 				}
 				$("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha", "1");
 
@@ -261,6 +262,7 @@ function displayMasterSched () {
 			}
 		}
 	}
+
 	animateMasterSched();
 	debug && console.log("Finished displaying master sched.");
 }
@@ -273,6 +275,7 @@ function animateMasterSched () {
 			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha") || 0;
 			if (colorSets.hasOwnProperty(masterSched[i][j].name)) {
 				var rgb = hexToRgb(colorSets[masterSched[i][j].name]);
+				console.log(colorSets);
 				$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alphaColor})`);
 			}
 		}
