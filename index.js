@@ -148,11 +148,11 @@ function getStudentDataViaNightmare (username, password, callback) {
 		.wait(1000)
 		.evaluate(function() {
 			if (document.getElementById("form:errorMsgs") == null) {
-				return true;
 				console.log("in")
+				return true;
 			} else {
-				return false;
 				console.log("not in")
+				return false;
 			}
 		})
 		.then(loggedIn => {
