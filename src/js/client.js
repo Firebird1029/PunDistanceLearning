@@ -54,10 +54,10 @@ var colors = ["#FF0C00", "#D58AEB", "#949FFF", "#8AE5EB", "#87FF9B", "#517664", 
 
 
 if (localStorage.getItem("schedData") != null) {
-	console.log(localStorage.getItem("schedData"));
-	masterSched = localStorage.getItem("schedData");
+	console.log(JSON.parse(localStorage.getItem("schedData")));
+	masterSched = JSON.parse(localStorage.getItem("schedData"));
 	console.log(localStorage.getItem("colorSets"));
-	colorSets = localStorage.getItem("colorSets");
+	colorSets = JSON.parse(localStorage.getItem("colorSets"));
 	$("#startScreen").addClass("is-hidden");
 	displayMasterSched();
 	console.log("wee");
@@ -272,6 +272,17 @@ function displayMasterSched () {
 					colorSets[masterSched[i][j].name] = colors.pop();
 					// $("#rightSidebar").append(`<div class='box' data-course='${masterSched[i][j].name}'><input class='colorPicker' 
 					// value="${colorSets[masterSched[i][j].name]}"></div>`);
+					$(".oneColorPickerGroupBlank").clone(true, true).removeClass("oneColorPickerGroupBlank is-hidden").insertAfter(".oneColorPickerGroup:last");
+					$(".oneColorPickerGroup:last").find(".box").data("courseColor", masterSched[i][j].name);
+					$(".oneColorPickerGroup:last").find(".colorPickerCourseName").text(masterSched[i][j].name);
+					$(".oneColorPickerGroup:last").find(".colorPickerContainer").append(`<input class="colorPicker" value="${colorSets[masterSched[i][j].name]}">`);
+					new jscolor($(".oneColorPickerGroup:last").find(".colorPicker").get(0));
+					$(".colorPicker").on("change", function(event) {
+						colorSets[$(this).closest(".box").data("courseColor")] = $(this).val();
+						localStorage.setItem("colorSets", JSON.stringify(colorSets));
+						animateMasterSched();
+					});
+				} else {
 					$(".oneColorPickerGroupBlank").clone(true, true).removeClass("oneColorPickerGroupBlank is-hidden").insertAfter(".oneColorPickerGroup:last");
 					$(".oneColorPickerGroup:last").find(".box").data("courseColor", masterSched[i][j].name);
 					$(".oneColorPickerGroup:last").find(".colorPickerCourseName").text(masterSched[i][j].name);
