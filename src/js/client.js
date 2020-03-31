@@ -223,6 +223,7 @@ function resetMasterSched () {
 				.find(".schedModTextContainer").text("");
 		}
 	}
+	$("th.schedModTimeHeader").removeClass(".no-border");
 }
 
 // Display Master Sched
@@ -282,6 +283,11 @@ function animateMasterSched () {
 				console.log(colorSets);
 				$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alphaColor})`);
 			}
+
+			// if (!border) {
+			// 	$("td." + conversionTable[i] + "Col.mod" + j).addClass(".no-border");
+			// 	$("th.schedModTimeHeader").addClass(".no-border");
+			// }
 		}
 	}
 	// backgroundColorAlpha

@@ -8,11 +8,14 @@ p.spacer {
 }
 
 #scheduleTable {
-	// TODO let user decide border or not
 	th.schedModTimeHeader {
 		// border: none;
 	}
 	td {
+		// border: none;
+	}
+
+	th.schedModTimeHeader.noBorder {
 		// border: none;
 	}
 	td.noBorder {
