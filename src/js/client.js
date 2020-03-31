@@ -49,9 +49,19 @@ var socket = io.connect(),
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]];
 // This 2D array, masterSched, represents the data that the DOM table will show. It is basically your schedule, in 2D array format.
 var masterSched = _.cloneDeep(masterSchedLayout);
-
 var colorSets = {}; // Object with all set colors of the different courses
 var colors = ["#FF0C00", "#D58AEB", "#949FFF", "#8AE5EB", "#87FF9B", "#517664", "#9FD8CB", "#D6E5E3", "#CACFD6"] // Array of preset colors to use
+
+
+if (localStorage.getItem("schedData") != null) {
+	console.log(localStorage.getItem("schedData"));
+	masterSched = localStorage.getItem("schedData");
+	console.log(localStorage.getItem("colorSets"));
+	colorSets = localStorage.getItem("colorSets");
+	$("#startScreen").addClass("is-hidden");
+	displayMasterSched();
+	console.log("wee");
+}
 
 // Navbar Burger
 // $(document).ready(function () {
@@ -222,6 +232,7 @@ function populateTable (courseInfo) {
 			}
 		}
 	}
+	localStorage.setItem("schedData", JSON.stringify(masterSched));
 }
 
 // Reset Master Schedule DOM
@@ -268,6 +279,7 @@ function displayMasterSched () {
 					new jscolor($(".oneColorPickerGroup:last").find(".colorPicker").get(0));
 					$(".colorPicker").on("change", function(event) {
 						colorSets[$(this).closest(".box").data("courseColor")] = $(this).val();
+						localStorage.setItem("colorSets", JSON.stringify(colorSets));
 						animateMasterSched();
 					});
 				}
@@ -300,6 +312,7 @@ function animateMasterSched () {
 			if (colorSets.hasOwnProperty(masterSched[i][j].name)) {
 				var rgb = hexToRgb(colorSets[masterSched[i][j].name]);
 				// console.log(colorSets);
+				localStorage.setItem("colorSets", JSON.stringify(colorSets));
 				$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alphaColor})`);
 			}
 
