@@ -113,7 +113,7 @@ function titleCase(str) {
  }
 
 // Pull the schedule data from the correct table
-function extractDataFromTable(callback) {
+function extractDataFromTable(nightmare, callback) {
 	nightmare
 		.wait("a[href='https://mybackpack.punahou.edu/SeniorApps/studentParent/schedule.faces?selectedMenuId=true']")
 		.click("a[href='https://mybackpack.punahou.edu/SeniorApps/studentParent/schedule.faces?selectedMenuId=true']")
@@ -153,7 +153,7 @@ function getStudentDataViaNightmare (username, password, callback) {
 		})
 		.then(loggedIn => {
 			if (loggedIn) {
-				extractDataFromTable(callback);
+				extractDataFromTable(nightmare, callback);
 			} else {
 				// Failed login
 				callback(["fail", "failedLogin"]);
