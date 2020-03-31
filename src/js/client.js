@@ -8,7 +8,8 @@ var conversionTable = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f"},
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]];
-var masterSched = _.cloneDeep(masterSchedLayout); // To reset masterSched quickly.
+// This 2D array, masterSched, represents the data that the DOM table will show. It is basically your schedule, in 2D array format.
+var masterSched = _.cloneDeep(masterSchedLayout);
 
 // Brandon's TODO
 // Fix 404 (just reload to homepage)
@@ -74,12 +75,28 @@ function populateTable (courseInfo) {
 	var DLmodTimeConversion = {1: "9:00", 2: "9:10", 3: "9:20", 4: "9:30", 5: "9:40", 6: "9:50", 7: "10:00", 8: "10:10", 9: "10:20", 10: "10:30",
 	11: "10:40", 12: "10:50", 13: "11:00", 14: "11:10", 15: "11:20", 16: "11:30", 17: "11:40", 18: "11:50", 19: "12:00", 20: "12:10", 21: "12:20",
 	22: "12:30", 23: "12:40", 24: "12:50", 25: "1:00", 26: "1:10", 27: "1:20", 28: "1:30", 29: "1:40", 30: "1:50", 31: "2:00", 32: "2:10", 33: "2:20"};
-	var startMod = _.invert(modTimeConversion)[courseInfo.start],
-		endMod = _.invert(modTimeConversion)[courseInfo.end];
-	var DLstartTime = DLmodTimeConversion[startMod],
-		DLendTime = DLmodTimeConversion[endMod];
+	var startMod = +_.invert(modTimeConversion)[courseInfo.start], // Convert, for example, "10:45" to 14 (the number 14, not "14")
+		endMod = +_.invert(modTimeConversion)[courseInfo.end];
+	// var DLstartTime = DLmodTimeConversion[startMod],
+	// 	DLendTime = DLmodTimeConversion[endMod];
 
-	// Next, populate the table!
+	// Next, figure out which courses belong to which letter days.
+	var classToLetterDayKey = {"World Languages": 0, "Art": 0, "Social Studies": 1, "DT (Design Technology)": 1, "Math": 2, "Music": 2,
+		"S+Well": 3, "Theatre": 3, "English": 4, "PE": 4, "Science": 5, "JROTC": 5};
+
+	// Now, fill out the 2D array masterSched with the data of your schedule. This is where all the distance learning day/time conversion happens.
+	for (var i = 0; i < masterSched.length; i++) {
+		for (var j = 0; j < masterSched[i].length; j++) {
+			// Check if this course (each course will be put through the outer function populateTable) belongs in this "column" (i) of masterSched
+			if (i === classToLetterDayKey[courseInfo.subject]) {
+				// This course belongs in this column i. For example, Physics will be matched with i value 5 using classToLetterDayKey.
+				if (j === startMod) {
+					console.log(courseInfo.name + " starts at " + courseInfo.start + " aka mod " + j);
+					masterSched[i][j] = courseInfo.name;
+				}
+			}
+		}
+	}
 }
 
 // Reset Master Schedule DOM
@@ -124,20 +141,13 @@ function displayMasterSched () {
 				// }
 
 				// Color of Mod
-				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha", "1");
-
-				if (numberOfFriendsOnBreak > 0) {
-					// .text(text) or .text("" + numberOfFriendsOnBreak + " friends")
-					text = text.substring(2);
-					$("td." + conversionTable[i] + "Col.mod" + (j + 1)).text(text);
-					// https://stackoverflow.com/questions/2151084/map-a-2d-array-onto-a-1d-array
-					tippyInstances[i+(6*j)].setContent(listOfFriends.join("<br>"));
-					tippyInstances[i+(6*j)].enable();
-				}
-			} else {
-				console.log("if else")
 				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).text("test")
 				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha", "1");
+				console.log($("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha"))
+			} else {
+				console.log("if else")
+				// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).text("test")
+				// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha", "1");
 				// text = (userProfile.schedule[i][j] == 0) ? "" : userProfile.schedule[i][j];
 				// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).text(text);
 			}
@@ -151,11 +161,12 @@ function animateMasterSched () {
 	var alphaColor;
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
-			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha");
+			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha") || 0;
 			// If no friends on this break, don't color the mod block
-			if (!$("td." + conversionTable[i] + "Col.mod" + (j + 1)).text().length) { alphaColor = 0 }
+			// if (!$("td." + conversionTable[i] + "Col.mod" + (j + 1)).text().length) { alphaColor = 0 }
 			// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).animate({backgroundColor: "rgba(227, 182, 14, " + alphaColor + ")"})
 			$("td." + conversionTable[i] + "Col.mod" + (j + 1)).css("backgroundColor", "rgba(227, 182, 14, " + alphaColor + ")");
+			console.log($("td." + conversionTable[i] + "Col.mod" + (j + 1)))
 		}
 	}
 	// backgroundColorAlpha
