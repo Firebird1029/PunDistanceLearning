@@ -77,10 +77,11 @@ $(".modal-close, .modal-background").click(() => {
 })
 
 // Auto-Sign In DOM Code
-// TODO add key bind enter button
 $("#autoSignInLoginBtn").click(() => {
 	// Check that both username and password are not blank
 	if ($("#autoSignInUsername").val() != "" && $("#autoSignInPassword").val() != "") {
+		$("#autoSignInLoginBtn").html(`<i class="fas fa-spinner fa-spin"></i>`)
+		$("#autoSignInLoginBtn").animateCSS("pulse");
 		socket.emit("autoSchedule", [$("#autoSignInUsername").val(), $("#autoSignInPassword").val()]);
 		// DOM Stuff
 		// TODO add "loading" message
@@ -89,6 +90,8 @@ $("#autoSignInLoginBtn").click(() => {
 		$("#autoSignInPassword").prop("disabled", true);
 		$("#autoSignInUsername").prop("disabled", true);
 		$("#autoSignInLoginBtn").prop("disabled", true);
+	} else {
+		$("#autoSignInLoginBtn").animateCSS("wobble");
 	}
 });
 
@@ -175,6 +178,7 @@ function compileWebForm () {
 		for (var i = 0; i < incompleteInput.length; i++) {
 			incompleteInput[i].addClass("is-danger");
 		}
+		$("#createSchedBtn").animateCSS("wobble");
 	}
 }
 
