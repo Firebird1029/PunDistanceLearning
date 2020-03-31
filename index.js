@@ -41,6 +41,7 @@ var express = require("express"),
 	io = require("socket.io"),
 	listener = io.listen(server),
 	cheerio = require("cheerio"),
+	Nightmare = require("nightmare");
 
 	// Utilities & Custom Modules
 	utils = require("./utils.js");
@@ -65,8 +66,6 @@ listener.sockets.on("connection", function connectionDetected (socket) {
 	});
 	socket.on("autoSchedule", function studentDataRequest(loginInfo) {
 		console.log("Socket io on server side");
-		let Nightmare = require("nightmare");
-		let nightmare = Nightmare({show: false});
 		getStudentDataViaNightmare(loginInfo[0], loginInfo[1], function(data) {
 			socket.emit("studentSchedData", data);
 		})
@@ -137,6 +136,7 @@ function extractDataFromTable(callback) {
 */
 function getStudentDataViaNightmare (username, password, callback) {
 	console.log(username);
+	let nightmare = Nightmare({show: false});
 	nightmare
 		.goto('https://mybackpack.punahou.edu/SeniorApps/facelets/registration/loginCenter.xhtml')
 		.wait('body')
