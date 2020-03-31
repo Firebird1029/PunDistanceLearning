@@ -1,5 +1,5 @@
 "use strict"; /* eslint-env node */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
-var debug = true;
+var debug = false;
 
 /*
  * Notes
@@ -20,6 +20,7 @@ var debug = true;
  * https://devhints.io/pm2
  * https://github.com/segmentio/nightmare/issues/224#issuecomment-141575361
  * https://stackoverflow.com/questions/36719236/nightmare-js-not-working
+ * https://github.com/electron/electron/issues/11755
  *
  * https://pm2.keymetrics.io/docs/usage/use-pm2-with-cloud-providers/
  * https://pm2.keymetrics.io/docs/integrations/heroku/
