@@ -51,6 +51,11 @@ listener.sockets.on("connection", function connectionDetected (socket) {
 	socket.on("refreshRequest", function processRefreshRequest (options) {
 		socket.emit("refreshResponse", {});
 	});
+	socket.on("autoSchedule", function studentDataRequest(loginInfo) {
+		getStudentDataViaNightmare(loginInfo[0], loginInfo[1], function(data) {
+			socket.emit("studentSchedData", data);
+		})
+	});
 });
 
 
@@ -70,10 +75,10 @@ function getDataFromTable(html, val, callback) {
 			// Create a new array that stores the course name and time.
 			data.push([courseName]);
 			for (var j = 0; j < 6; j++) {
-				var courseMeetingTime = parseInt($(`table.dataTableOdd > tbody > tr > td > table.dataTable > tbody > tr:nth-child(${i + 1}) > td:nth-child(${6 + j})`).text().split("-")[0]);
+				var courseMeetingTime = $(`table.dataTableOdd > tbody > tr > td > table.dataTable > tbody > tr:nth-child(${i + 1}) > td:nth-child(${6 + j})`).text().split("-");
 				// Check if the time is already in the array or if the meeting time is a break
-				if (!isNaN(courseMeetingTime) && courseMeetingTime != data[data.length - 1][data[data.length - 1].length - 1]) {
-					data[data.length - 1].push(courseMeetingTime);
+				if (courseMeetingTime.length > 1 && parseInt(courseMeetingTime[0]) != data[data.length - 1][data[data.length - 1].length - 1][0]) {
+					data[data.length - 1].push([parseInt(courseMeetingTime[0]), parseInt(courseMeetingTime[1])]);
 				}
 			}
 		}
@@ -162,11 +167,4 @@ function getStudentDataViaNightmare (username, password, callback) {
 		.catch(error => {
 			console.error("Error: ", error);
 		});
-}
-
-console.log("Nightmare!");
-getStudentDataViaNightmare("", "!", print);
-
-function print(data) {
-	console.log(data);
 }

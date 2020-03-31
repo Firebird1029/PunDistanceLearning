@@ -1,5 +1,5 @@
 "use strict"; /* eslint-env browser */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
-const debug = true;
+const debug = false;
 
 var conversionTable = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f"},
 	masterSchedLayout = [[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
@@ -202,4 +202,20 @@ if (debug) {
 var socket = io.connect();
 socket.on("connectionReceived", function connectionReceived () {
 	// 
+});
+
+socket.on("studentSchedData", function receivedSchedData(data) {
+	console.log(data);
+});
+
+
+$("#autoSignIn").click(function() {
+	// Check that both username and password are not blank
+	if ($("#username").val() != "" && $("#password").val() != "") {
+		console.log($("#username").val());
+		socket.emit("autoSchedule", [$("#username").val(), $("#password").val()]);
+		// Empty input fields
+		$("#password").val("");
+		$("#username").val("");
+	}
 });

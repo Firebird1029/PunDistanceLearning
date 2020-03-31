@@ -18,7 +18,9 @@ html(lang="en")
 							button.button#showMakeScheduleScreen Make My Schedule!
 					#makeScheduleScreen.is-hidden
 						+section()
-							button.button.is-success Auto Sign-in to Punahou
+							button#autoSignIn.button.is-success Auto Sign-in to Punahou
+							input#username(type="text", placeholder="jdoe20")
+							input#password(type="password")
 							p.spacer
 							p Or manually enter your schedule information below:
 							#SchedFormCourses
