@@ -1,5 +1,5 @@
 "use strict"; /* eslint-env browser */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
-const debug = true;
+const debug = false;
 
 // These 2 functions are in case the course name is too long
 // https://stackoverflow.com/questions/14484787/wrap-text-in-javascript
@@ -49,6 +49,9 @@ var socket = io.connect(),
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]];
 // This 2D array, masterSched, represents the data that the DOM table will show. It is basically your schedule, in 2D array format.
 var masterSched = _.cloneDeep(masterSchedLayout);
+
+var colorSets = {}; // Object with all set colors of the different courses
+var colors = ["#FF0C00", "#D58AEB", "#949FFF", "#8AE5EB", "#87FF9B", "#2D3319", "#517664", "#9FD8CB", "#D6E5E3", "#CACFD6"] // Array of preset colors to use
 
 // Navbar Burger
 // $(document).ready(function () {
@@ -140,7 +143,6 @@ function compileWebForm () {
 			incompleteInput.push($el.find(".courseStartTimeDropdown").parent());
 		} 
 		if (courseStartTime == "Select:") {
-			console.log("no start time");
 			checkFill = false;
 			incompleteInput.push($el.find(".courseStartTimeDropdown").parent());
 		} 
@@ -154,7 +156,6 @@ function compileWebForm () {
 			endMod = +_.invert(modTimeConversion)[courseEndTime.slice(0, -3)];
 
 		if (endMod <= startMod) {
-			console.log("hello!");
 			checkFill = false;
 			incompleteInput.push($el.find(".courseStartTimeDropdown").parent());
 			incompleteInput.push($el.find(".courseEndTimeDropdown").parent());
@@ -169,9 +170,9 @@ function compileWebForm () {
 	if (checkFill === true) {
 		// TODO add artifical loading bar LOL
 		displayMasterSched();
+		$("#makeScheduleScreen").addClass("is-hidden");
 	} else {
 		for (var i = 0; i < incompleteInput.length; i++) {
-			console.log(incompleteInput[i]);
 			incompleteInput[i].addClass("is-danger");
 		}
 	}
@@ -236,6 +237,16 @@ function displayMasterSched () {
 				// TODO comment this
 				$("td." + conversionTable[i] + "Col.mod" + j).addClass("noBorder");
 				$("td." + conversionTable[i] + "Col.mod" + j).data("courseName", masterSched[i][j].name);
+				if (!colorSets.hasOwnProperty([masterSched[i][j].name])) {
+					colorSets[masterSched[i][j].name] = colors.pop();
+					$("#rightSidebar").append(`<div class='box' data-course='${masterSched[i][j].name}'><input class='jscolor colorPicker' 
+					value="${colorSets[masterSched[i][j].name]}"></div>`);
+
+					$(".colorPicker").on("change", function(event) {
+						colorSets[$(this).parent().attr("data-course")] = "#" + $(this).val();
+						animateMasterSched();
+					})
+				}
 				$("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha", "1");
 
 				// Algorithm: So basically, the name of the course must be displayed in the vertical center of a course "block".
@@ -260,17 +271,34 @@ function animateMasterSched () {
 	var alphaColor;
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
-			alphaColor = $("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha") || 0;
-			$("td." + conversionTable[i] + "Col.mod" + j).css("backgroundColor", "rgba(227, 182, 14, " + alphaColor + ")");
-			// TODO user selects color
-			// TODO user selects border or not
-			if (!border) {
-				$("td." + conversionTable[i] + "Col.mod" + j).addClass(".no-border");
-				$("th.schedModTimeHeader").addClass(".no-border");
+			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha") || 0;
+			if (colorSets.hasOwnProperty(masterSched[i][j].name)) {
+				var rgb = hexToRgb(colorSets[masterSched[i][j].name]);
+				$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alphaColor})`);
 			}
+
+			// if (!border) {
+			// 	$("td." + conversionTable[i] + "Col.mod" + j).addClass(".no-border");
+			// 	$("th.schedModTimeHeader").addClass(".no-border");
+			// }
 		}
 	}
 	// backgroundColorAlpha
+}
+
+function hexToRgb(hex) {
+	// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+	var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+	hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+		return r + r + g + g + b + b;
+	});
+
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
 }
 
 // Debug Code
@@ -305,6 +333,7 @@ if (debug) {
 socket.on("studentSchedData", function receivedSchedData (data) {
 	console.log(data);
 	if (data[0] === "success") {
+		$("#signInInfoText").addClass("is-hidden");
 		// Populate fields on screen
 		for (var i = 0; i < data[1].length; i++) {
 			$(".oneCourseGroup:last").find(".courseName").val(data[1][i][0]);
@@ -349,5 +378,4 @@ function createPDF() {
 		pdf.save(filename);
 	});
 }
-
 
