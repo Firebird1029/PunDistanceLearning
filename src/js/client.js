@@ -218,6 +218,7 @@ function resetMasterSched () {
 				.find(".schedModTextContainer").text("");
 		}
 	}
+	$("th.schedModTimeHeader").removeClass(".no-border");
 }
 
 // Display Master Sched
@@ -259,9 +260,14 @@ function animateMasterSched () {
 	var alphaColor;
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
-			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha") || 0;
-			$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", "rgba(227, 182, 14, " + alphaColor + ")");
+			alphaColor = $("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha") || 0;
+			$("td." + conversionTable[i] + "Col.mod" + j).css("backgroundColor", "rgba(227, 182, 14, " + alphaColor + ")");
 			// TODO user selects color
+			// TODO user selects border or not
+			if (!border) {
+				$("td." + conversionTable[i] + "Col.mod" + j).addClass(".no-border");
+				$("th.schedModTimeHeader").addClass(".no-border");
+			}
 		}
 	}
 	// backgroundColorAlpha
