@@ -283,16 +283,18 @@ function displayMasterSched () {
 						animateMasterSched();
 					});
 				} else {
-					$(".oneColorPickerGroupBlank").clone(true, true).removeClass("oneColorPickerGroupBlank is-hidden").insertAfter(".oneColorPickerGroup:last");
-					$(".oneColorPickerGroup:last").find(".box").data("courseColor", masterSched[i][j].name);
-					$(".oneColorPickerGroup:last").find(".colorPickerCourseName").text(masterSched[i][j].name);
-					$(".oneColorPickerGroup:last").find(".colorPickerContainer").append(`<input class="colorPicker" value="${colorSets[masterSched[i][j].name]}">`);
-					new jscolor($(".oneColorPickerGroup:last").find(".colorPicker").get(0));
-					$(".colorPicker").on("change", function(event) {
-						colorSets[$(this).closest(".box").data("courseColor")] = $(this).val();
-						localStorage.setItem("colorSets", JSON.stringify(colorSets));
-						animateMasterSched();
-					});
+					if (masterSched[i][j].name !== $(".oneColorPickerGroup:last").find(".colorPickerCourseName").text()) {
+						$(".oneColorPickerGroupBlank").clone(true, true).removeClass("oneColorPickerGroupBlank is-hidden").insertAfter(".oneColorPickerGroup:last");
+						$(".oneColorPickerGroup:last").find(".box").data("courseColor", masterSched[i][j].name);
+						$(".oneColorPickerGroup:last").find(".colorPickerCourseName").text(masterSched[i][j].name);
+						$(".oneColorPickerGroup:last").find(".colorPickerContainer").append(`<input class="colorPicker" value="${colorSets[masterSched[i][j].name]}">`);
+						new jscolor($(".oneColorPickerGroup:last").find(".colorPicker").get(0));
+						$(".colorPicker").on("change", function(event) {
+							colorSets[$(this).closest(".box").data("courseColor")] = $(this).val();
+							localStorage.setItem("colorSets", JSON.stringify(colorSets));
+							animateMasterSched();
+						});
+					}
 				}
 				$("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha", "1");
 
