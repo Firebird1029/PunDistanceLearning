@@ -169,6 +169,7 @@ function compileWebForm () {
 	if (checkFill === true) {
 		// TODO add artifical loading bar LOL
 		displayMasterSched();
+		$("#makeScheduleScreen").addClass("is-hidden");
 	} else {
 		for (var i = 0; i < incompleteInput.length; i++) {
 			console.log(incompleteInput[i]);
@@ -260,7 +261,7 @@ function animateMasterSched () {
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
 			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha") || 0;
-			var rgb = hexToRgb(("#colorPicker").val());
+			var rgb = hexToRgb($("#colorPicker").val());
 			$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alphaColor})`);
 			// TODO user selects color
 		}
