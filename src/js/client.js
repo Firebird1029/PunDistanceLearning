@@ -1,5 +1,5 @@
 "use strict"; /* eslint-env browser */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
-const debug = false;
+const debug = true;
 
 var conversionTable = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f"},
 	masterSchedLayout = [[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
@@ -57,12 +57,12 @@ function compileWebForm () {
 		courseSubject = $el.find(".courseSubjectDropdown").find(":selected").text(),
 		courseStartTime = $el.find(".courseStartTimeDropdown").find(":selected").text(),
 		courseEndTime = $el.find(".courseEndTimeDropdown").find(":selected").text();
-		debug && console.log(courseName, courseSubject, courseStartTime, courseEndTime);
 		// Send an object of information about the course to the function populateTable which populates the DOM table.
 		// By the way, need to .slice(0, -3) to remove " AM" or " PM" from the start and end times.
 		populateTable({"name": courseName, "subject": courseSubject, "start": courseStartTime.slice(0, -3), "end": courseEndTime.slice(0, -3)});
 	});
 	// TODO add artifical loading bar LOL
+	displayMasterSched();
 }
 
 function populateTable (courseInfo) {
@@ -76,9 +76,11 @@ function populateTable (courseInfo) {
 	11: "10:40", 12: "10:50", 13: "11:00", 14: "11:10", 15: "11:20", 16: "11:30", 17: "11:40", 18: "11:50", 19: "12:00", 20: "12:10", 21: "12:20",
 	22: "12:30", 23: "12:40", 24: "12:50", 25: "1:00", 26: "1:10", 27: "1:20", 28: "1:30", 29: "1:40", 30: "1:50", 31: "2:00", 32: "2:10", 33: "2:20"};
 	var startMod = +_.invert(modTimeConversion)[courseInfo.start], // Convert, for example, "10:45" to 14 (the number 14, not "14")
-		endMod = +_.invert(modTimeConversion)[courseInfo.end];
+		// The end mod is actually one less than the user input. (7:30-8:30 is 4 mods, but selecting 8:30 on the website is a 5th mod, 8:30-8:45)
+		endMod = +_.invert(modTimeConversion)[courseInfo.end] - 1;
 	// var DLstartTime = DLmodTimeConversion[startMod],
 	// 	DLendTime = DLmodTimeConversion[endMod];
+	debug && console.log(courseInfo, startMod, endMod);
 
 	// Next, figure out which courses belong to which letter days.
 	var classToLetterDayKey = {"World Languages": 0, "Art": 0, "Social Studies": 1, "DT (Design Technology)": 1, "Math": 2, "Music": 2,
@@ -90,9 +92,8 @@ function populateTable (courseInfo) {
 			// Check if this course (each course will be put through the outer function populateTable) belongs in this "column" (i) of masterSched
 			if (i === classToLetterDayKey[courseInfo.subject]) {
 				// This course belongs in this column i. For example, Physics will be matched with i value 5 using classToLetterDayKey.
-				if (j === startMod) {
-					console.log(courseInfo.name + " starts at " + courseInfo.start + " aka mod " + j);
-					masterSched[i][j] = courseInfo.name;
+				if (j >= startMod && j <= endMod) {
+					masterSched[i][j] = courseInfo.name; // Now store the name of the course into the 2D array masterSched
 				}
 			}
 		}
@@ -104,52 +105,23 @@ function resetMasterSched () {
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
 			$("td." + conversionTable[i] + "Col.mod" + (j + 1)).css("backgroundColor", "").text("");
-			// tippyInstances[i+(6*j)].disable();
 		}
 	}
 }
 
 // Display Master Sched
+// TODO -- comment everything
 function displayMasterSched () {
 	resetMasterSched();
 	var text;
-	// i is the column, j is the row
+	// i is the column, j is the row of the DOM schedule table that corresponds with masterSched
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
 			if (masterSched[i][j].length > 0) {
-				console.log("if true")
-				// You have friends on this break! -- ???
-				text = "";
-				// for (var k = 0; k < masterSched[i][j].length; k++) {
-				// 	// These are each friend during this specific break.
-					
-				// 	// If just trying to view one user, then ignore the other users
-				// 	if (oneUserSoloTrack) {
-				// 		if (oneUserSoloTrack === masterSched[i][j][k].punName) {
-				// 			text = text + ", " + masterSched[i][j][k].fname;
-				// 			listOfFriends.push(masterSched[i][j][k].fname + " " + masterSched[i][j][k].lname);
-				// 			numberOfFriendsOnBreak++;
-				// 		}
-				// 	} else {
-				// 		if (ignoreFriendScheds.indexOf(masterSched[i][j][k].punName) < 0) {
-				// 			// Show this user to display, since it does not exist in the ignoreFriendScheds array
-				// 			text = text + ", " + masterSched[i][j][k].fname;
-				// 			listOfFriends.push(masterSched[i][j][k].fname + " " + masterSched[i][j][k].lname);
-				// 			numberOfFriendsOnBreak++;
-				// 		}
-				// 	}
-				// }
-
-				// Color of Mod
-				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).text("test")
+				// comment this TODO
+				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).text(masterSched[i][j]); // TODO delete this after dev!
+				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("courseName", masterSched[i][j]);
 				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha", "1");
-				console.log($("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha"))
-			} else {
-				console.log("if else")
-				// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).text("test")
-				// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha", "1");
-				// text = (userProfile.schedule[i][j] == 0) ? "" : userProfile.schedule[i][j];
-				// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).text(text);
 			}
 		}
 	}
@@ -157,16 +129,13 @@ function displayMasterSched () {
 }
 
 // Animation For Master Sched
+// TODO -- animation CSS transition delay not working??
 function animateMasterSched () {
 	var alphaColor;
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
 			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha") || 0;
-			// If no friends on this break, don't color the mod block
-			// if (!$("td." + conversionTable[i] + "Col.mod" + (j + 1)).text().length) { alphaColor = 0 }
-			// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).animate({backgroundColor: "rgba(227, 182, 14, " + alphaColor + ")"})
 			$("td." + conversionTable[i] + "Col.mod" + (j + 1)).css("backgroundColor", "rgba(227, 182, 14, " + alphaColor + ")");
-			console.log($("td." + conversionTable[i] + "Col.mod" + (j + 1)))
 		}
 	}
 	// backgroundColorAlpha
@@ -199,16 +168,14 @@ if (debug) {
 }
 // });
 
+// Socket.IO Code
 var socket = io.connect();
-socket.on("connectionReceived", function connectionReceived () {
-	// 
-});
-
 socket.on("studentSchedData", function receivedSchedData(data) {
 	console.log(data);
 });
 
-
+// When User Clicks Auto Sign-in Using Punahou
+// TODO -- turn into modal
 $("#autoSignIn").click(function() {
 	// Check that both username and password are not blank
 	if ($("#username").val() != "" && $("#password").val() != "") {
