@@ -388,9 +388,13 @@ socket.on("studentSchedData", function receivedSchedData (data) {
 		$("#signInInfoText").addClass("is-hidden");
 		// Populate fields on screen
 		for (var i = 0; i < data[1].length; i++) {
-			$(".oneCourseGroup:last").find(".courseName").val(data[1][i][0]);
+			if (data[1][i][0].indexOf(data[1][i][0].substring(0, 4)) !== data[1][i][0].lastIndexOf(data[1][i][0].substring(0, 4))) {
+				$(".oneCourseGroup:last").find(".courseName").val(data[1][i][0].substring(0, data[1][i][0].lastIndexOf(data[1][i][0].substring(0, 4))));
+			} else {
+				$(".oneCourseGroup:last").find(".courseName").val(data[1][i][0]);
+			}
 			// We can't pull the subject from myBackpack
-			
+
 			// If start and end time mods are given, then populate those fields
 			if (data[1][i][1]) {
 				if (data[1][i][1].length >= 2) {
