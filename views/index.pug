@@ -18,9 +18,25 @@ html(lang="en")
 							button.button#showMakeScheduleScreen Make My Schedule!
 					#makeScheduleScreen.is-hidden
 						+section()
-							button#autoSignIn.button.is-success Auto Sign-in to Punahou
-							input#username(type="text", placeholder="jdoe20")
-							input#password(type="password")
+							button.button.is-success#autoSignInBtn Auto Sign-in to Punahou
+							.modal#autoSignInModal
+								.modal-background
+								.modal-content
+									+section()
+										.box.is-clipped.has-text-centered
+											h1.title Sign In Using Punahou
+											p This is an optional step to automatically pull your class names and times from punahou.edu.
+											.field
+												label.label Punahou Username
+												.control
+													input.input#autoSignInUsername(type="text", placeholder="i.e. jdoe24")
+												p.help Do not include "@punahou.edu"
+											.field
+												label.label Punahou Password
+												.control
+													input.input#autoSignInPassword(type="password")
+											button.button.is-link#autoSignInLoginBtn Login
+								button.modal-close.is-large#autoSignInModalCloseBtn
 							p.spacer
 							p Or manually enter your schedule information below:
 							#SchedFormCourses

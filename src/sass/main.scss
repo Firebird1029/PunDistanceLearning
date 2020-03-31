@@ -7,6 +7,15 @@ p.spacer {
 	margin-top: 2rem;
 }
 
+#scheduleTable {
+	th.schedModTimeHeader {
+		border: none;
+	}
+	td {
+		border: none;
+	}
+}
+
 .schedMod {
 	@extend .has-text-centered;
 	vertical-align: middle !important;

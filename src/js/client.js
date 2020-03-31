@@ -1,7 +1,8 @@
 "use strict"; /* eslint-env browser */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
 const debug = true;
 
-var conversionTable = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f"},
+var socket = io.connect(),
+	conversionTable = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f"},
 	masterSchedLayout = [[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
 	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
@@ -28,6 +29,23 @@ $("#showMakeScheduleScreen").click(() => {
 	$("#startScreen").addClass("is-hidden");
 	$("#makeScheduleScreen").removeClass("is-hidden");
 	$("#addCourseBtn").click();
+});
+
+// When User Clicks Auto Sign-in Using Punahou
+$("#autoSignInBtn").click(() => {
+	$("#autoSignInModal").addClass("is-active");
+});
+
+// Auto-Sign In DOM Code
+$("#autoSignInLoginBtn").click(() => {
+	$("#autoSignInModalCloseBtn").addClass("is-invisible");
+	// Check that both username and password are not blank
+	if ($("#autoSignInUsername").val() != "" && $("#autoSignInPassword").val() != "") {
+		socket.emit("autoSchedule", [$("#autoSignInUsername").val(), $("#autoSignInPassword").val()]);
+		// Empty input fields
+		$("#autoSignInPassword").addClass("is-disabled");
+		$("#autoSignInUsername").addClass("is-disabled");
+	}
 });
 
 // Add Course Button
@@ -125,12 +143,13 @@ function displayMasterSched () {
 				// If the course info object exists for this iteration of masterSched, then there is a course during this time
 				// TODO comment this
 				$("td." + conversionTable[i] + "Col.mod" + (j)).data("courseName", masterSched[i][j].name);
-				$("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha", "0.5");
+				$("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha", "1");
 
 				// Algorithm: So basically, the name of the course must be displayed in the vertical center of a course "block".
 				// We need to calculate a way to determine which mod and which cell of the DOM table is the center of the course "block".
 				middleMod = masterSched[i][j].startMod + Math.floor((masterSched[i][j].endMod - masterSched[i][j].startMod) / 2);
 				if (j === middleMod) {
+					// If this mod is the middle mod, then add text to it
 					$("td." + conversionTable[i] + "Col.mod" + (j)).find(".schedModTextContainer").text(masterSched[i][j].name); // TODO text half-"block" lower!
 					$("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha", "1");
 				}
@@ -182,21 +201,7 @@ if (debug) {
 }
 // });
 
-// Socket.IO Code
-var socket = io.connect();
+// Socket IO Retrieving Student Data
 socket.on("studentSchedData", function receivedSchedData(data) {
 	console.log(data);
-});
-
-// When User Clicks Auto Sign-in Using Punahou
-// TODO -- turn into modal
-$("#autoSignIn").click(function() {
-	// Check that both username and password are not blank
-	if ($("#username").val() != "" && $("#password").val() != "") {
-		console.log($("#username").val());
-		socket.emit("autoSchedule", [$("#username").val(), $("#password").val()]);
-		// Empty input fields
-		$("#password").val("");
-		$("#username").val("");
-	}
 });
