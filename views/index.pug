@@ -109,7 +109,7 @@ html(lang="en")
 							form.form#makeScheduleForm
 								.field.is-grouped.is-grouped-centered
 									.control
-										button.button.is-link Do Magic!
+										button.button.is-link#doMagicBtn Do Magic!
 					#tableScreen.is-hidden
 						section.section
 							//- .container.has-text-right.content
@@ -128,15 +128,15 @@ html(lang="en")
 									tbody
 										- var i=1
 										- var DLmodTimeConversion = {1: "9:00", 2: "9:10", 3: "9:20", 4: "9:30", 5: "9:40", 6: "9:50", 7: "10:00", 8: "10:10", 9: "10:20", 10: "10:30", 11: "10:40", 12: "10:50", 13: "11:00", 14: "11:10", 15: "11:20", 16: "11:30", 17: "11:40", 18: "11:50", 19: "12:00", 20: "12:10", 21: "12:20", 22: "12:30", 23: "12:40", 24: "12:50", 25: "1:00", 26: "1:10", 27: "1:20", 28: "1:30", 29: "1:40", 30: "1:50", 31: "2:00", 32: "2:10", 33: "2:20"};
-										while i <= 32
+										while i <= 33
 											tr
 												th.schedModTimeHeader= DLmodTimeConversion[i]
-												td.schedMod.is-unselectable.aCol(class=["mod" + i])
-												td.schedMod.is-unselectable.bCol(class=["mod" + i])
-												td.schedMod.is-unselectable.cCol(class=["mod" + i])
-												td.schedMod.is-unselectable.dCol(class=["mod" + i])
-												td.schedMod.is-unselectable.eCol(class=["mod" + i])
-												td.schedMod.is-unselectable.fCol(class=["mod" + i])
+												td.schedMod.is-unselectable.aCol(class=["mod" + i]): .schedModTextContainer
+												td.schedMod.is-unselectable.bCol(class=["mod" + i]): .schedModTextContainer
+												td.schedMod.is-unselectable.cCol(class=["mod" + i]): .schedModTextContainer
+												td.schedMod.is-unselectable.dCol(class=["mod" + i]): .schedModTextContainer
+												td.schedMod.is-unselectable.eCol(class=["mod" + i]): .schedModTextContainer
+												td.schedMod.is-unselectable.fCol(class=["mod" + i]): .schedModTextContainer
 												- i++
 				.column#rightSidebar
 

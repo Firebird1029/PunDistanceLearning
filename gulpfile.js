@@ -33,7 +33,7 @@ gulp.task("js", function () {
 });
 
 gulp.task("watch", function () {
-	gulp.watch(["src/sass/*.scss", "src/sass/*.sass"], gulp.series("css"));
+	gulp.watch(["src/sass/*.scss", "src/sass/*.scss"], gulp.series("css"));
 	gulp.watch(["src/js/*.js"], gulp.series("js"));
 });
 

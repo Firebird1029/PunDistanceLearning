@@ -2,12 +2,12 @@
 const debug = true;
 
 var conversionTable = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f"},
-	masterSchedLayout = [[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
-	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
-	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
-	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
-	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
-	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]];
+	masterSchedLayout = [[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
+	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
+	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
+	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
+	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []],
+	   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]];
 // This 2D array, masterSched, represents the data that the DOM table will show. It is basically your schedule, in 2D array format.
 var masterSched = _.cloneDeep(masterSchedLayout);
 
@@ -68,6 +68,7 @@ function compileWebForm () {
 
 function populateTable (courseInfo) {
 	// HOLY SMOKES THIS WAS HARD
+	debug && console.log("Storing " + courseInfo.name + " into masterSched...");
 	
 	// First, convert all the times to distance learning (DL) times
 	var modTimeConversion = {1: "7:30", 2: "7:45", 3: "8:00", 4: "8:15", 5: "8:30", 6: "8:45", 7: "9:00", 8: "9:15", 9: "9:30", 10: "9:45",
@@ -94,8 +95,7 @@ function populateTable (courseInfo) {
 			if (i === classToLetterDayKey[courseInfo.subject]) {
 				// This course belongs in this column i. For example, Physics will be matched with i value 5 using classToLetterDayKey.
 				if (j >= startMod && j <= endMod) {
-					masterSched[i][j] = [courseInfo.name, startMod, endMod]; // Now store the info of the course into the 2D array masterSched
-					// I guess masterSched is a 3D array now?
+					masterSched[i][j] = {"name": courseInfo.name, "startMod": startMod, "endMod": endMod}; // Now store the info of the course into the 2D array masterSched
 				}
 			}
 		}
@@ -106,28 +106,39 @@ function populateTable (courseInfo) {
 function resetMasterSched () {
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
-			$("td." + conversionTable[i] + "Col.mod" + (j + 1)).css("backgroundColor", "").text("");
+			$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", "").find(".schedModTextContainer").text("");
 		}
 	}
 }
 
 // Display Master Sched
 // TODO -- comment everything
+// TODO ERROR IMPORTANT - MOD 32 (LAST MOD) DOESN'T SHOW UP!!!!
 function displayMasterSched () {
+	debug && console.log("Displaying master sched...");
 	resetMasterSched();
-	var text;
+	var middleMod; // The middle mod between the start and end mod. Will be explained later inside the function.
 	// i is the column, j is the row of the DOM schedule table that corresponds with masterSched
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
-			if (masterSched[i][j].length > 0) {
+			if (typeof masterSched[i][j].name != "undefined") {
+				// If the course info object exists for this iteration of masterSched, then there is a course during this time
 				// TODO comment this
-				// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).text(masterSched[i][j]); // TODO delete this after dev!
-				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("courseName", masterSched[i][j]);
-				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha", "1");
+				$("td." + conversionTable[i] + "Col.mod" + (j)).data("courseName", masterSched[i][j].name);
+				$("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha", "0.5");
+
+				// Algorithm: So basically, the name of the course must be displayed in the vertical center of a course "block".
+				// We need to calculate a way to determine which mod and which cell of the DOM table is the center of the course "block".
+				middleMod = masterSched[i][j].startMod + Math.floor((masterSched[i][j].endMod - masterSched[i][j].startMod) / 2);
+				if (j === middleMod) {
+					$("td." + conversionTable[i] + "Col.mod" + (j)).find(".schedModTextContainer").text(masterSched[i][j].name); // TODO text half-"block" lower!
+					$("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha", "1");
+				}
 			}
 		}
 	}
 	animateMasterSched();
+	debug && console.log("Finished displaying master sched.");
 }
 
 // Animation For Master Sched
@@ -135,8 +146,8 @@ function animateMasterSched () {
 	var alphaColor;
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
-			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha") || 0;
-			$("td." + conversionTable[i] + "Col.mod" + (j + 1)).css("backgroundColor", "rgba(227, 182, 14, " + alphaColor + ")");
+			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha") || 0;
+			$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", "rgba(227, 182, 14, " + alphaColor + ")");
 			// TODO user selects color
 		}
 	}
@@ -167,6 +178,7 @@ if (debug) {
 	$(".oneCourseGroup:last").find(".courseStartTimeDropdown").val("2:30 PM");
 	$(".oneCourseGroup:last").find(".courseEndTimeDropdown").val("3:30 PM");
 
+	$("#doMagicBtn").click();
 }
 // });
 
