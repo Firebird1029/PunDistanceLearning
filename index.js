@@ -60,7 +60,7 @@ listener.sockets.on("connection", function connectionDetected (socket) {
 
 
 // Use cheerio to process schedule data and find breaks
-function getDataFromTable(html, val, callback) {
+function getDataFromTable(html, callback) {
 	var $ = cheerio.load(html);
 	var $table = $("table.dataTableOdd > tbody > tr > td > table.dataTable > tbody"); // Table that stores course info
 	var len = $table.children().length; // Amount of courses
@@ -92,49 +92,17 @@ function extractDataFromTable(callback) {
 		.wait("a[href='https://mybackpack.punahou.edu/SeniorApps/studentParent/schedule.faces?selectedMenuId=true']")
 		.click("a[href='https://mybackpack.punahou.edu/SeniorApps/studentParent/schedule.faces?selectedMenuId=true']")
 		.wait("select")
-		.evaluate(function(){
-			for (var i = 0; i < document.querySelector("select").children.length; i++) {
-				if (document.querySelector("select").children[i].innerHTML == "Punahou Academy") {
-					return document.querySelector("select").children[i].value;
-				}
-			}
+		.evaluate(() => document.body.innerHTML)
+		.then(response => {
+			getDataFromTable(response, function(data) {
+				nightmare.end();
+				callback(data);
+			});
+			
 		})
-		.then(value => {
-			nightmare
-				.wait(500)
-				.select('select', value)
-				.wait(1000)
-				.evaluate(function(){
-					if (document.querySelector("input.listButtonUp") === null) {
-						return false;
-					} else {
-						return true;
-					}
-				})
-				.then(inputExists => {
-					if (inputExists) {
-						nightmare
-							.wait("input.listButtonUp")
-							.click("input.listButtonUp")
-					}
-					nightmare
-						.wait(4000)
-						.evaluate(() => document.body.innerHTML)
-						.then(response => {
-							getDataFromTable(response, value, function(data) {
-								nightmare.end();
-								callback(data);
-							});
-							
-						})
-						.catch(error => {
-							console.error("Error: ", error);
-						})
-				})
-				.catch(error => {
-					console.error("Error: ", error);
-				})
-			})
+		.catch(error => {
+			console.error("Error: ", error);
+		})
 }
 
 /* Pull student schedule from myBackpack using the username and password to login
@@ -148,7 +116,7 @@ function getStudentDataViaNightmare (username, password, callback) {
 		.type('input[id="form:userId"]', username)
 		.type('input[id="form:userPassword"]', password)
 		.click('input[name="form:signIn"]')
-		.wait(3000)
+		.wait(1000)
 		.evaluate(function() {
 			if (document.getElementById("form:errorMsgs") == null) {
 				return true;
