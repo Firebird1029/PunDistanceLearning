@@ -9,6 +9,20 @@ var debug = true;
  * https://pugjs.org/api/getting-started.html
  * http://html2jade.vida.io/
  * https://fontawesome.com/icons
+ *
+ * https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04
+ * https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars
+ * https://www.digitalocean.com/community/tutorials/how-to-set-up-let-s-encrypt-with-nginx-server-blocks-on-ubuntu-16-04
+ * https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04
+ *
+ * https://github.com/segmentio/nightmare/issues/224#issuecomment-239335488
+ * https://stackoverflow.com/questions/40178836/run-nightmare-by-pm2-or-something-like-that-on-the-server
+ * https://devhints.io/pm2
+ * sudo apt-get -y install xvfb
+ *
+ * https://pm2.keymetrics.io/docs/usage/use-pm2-with-cloud-providers/
+ * https://pm2.keymetrics.io/docs/integrations/heroku/
+ * 
  */
 
 // Load Node Dependencies & Custom Modules

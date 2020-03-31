@@ -1,21 +1,33 @@
 "use strict"; /* eslint-env browser */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
 const debug = true;
 
-// Brandon's TODO
-// Fix 404 (just reload to homepage)
-// login fail auto signin
-// Show the headers of possible sync classes
-// If class name is too long!
-// Animate css
-// You only have class 3x/cycle!
-// Customize font, colors !
-// Gif while loading
-// If automatic pull didnt work !
-// Form validation !!
-// Deploy! !!
-// 
-// Stylistic Fixes
-// Schedule table center align vertically class name
+// These 2 functions are in case the course name is too long
+// https://stackoverflow.com/questions/14484787/wrap-text-in-javascript
+function wordWrap(str, maxWidth) {
+	var newLineStr = "\n"; done = false; res = '';
+	while (str.length > maxWidth) {                 
+		found = false;
+		// Inserts new line at first whitespace of the line
+		for (i = maxWidth - 1; i >= 0; i--) {
+			if (testWhite(str.charAt(i))) {
+				res = res + [str.slice(0, i), newLineStr].join('');
+				str = str.slice(i + 1);
+				found = true;
+				break;
+			}
+		}
+		// Inserts new line at maxWidth position, the word is too long to wrap
+		if (!found) {
+			res += [str.slice(0, maxWidth), newLineStr].join('');
+			str = str.slice(maxWidth);
+		}
+	}
+	return res + str;
+}
+function testWhite(x) {
+	var white = new RegExp(/^\s$/);
+	return white.test(x.charAt(0));
+};
 
 var socket = io.connect(),
 	conversionTable = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f"},
@@ -230,7 +242,8 @@ function displayMasterSched () {
 				middleMod = masterSched[i][j].startMod + Math.floor((masterSched[i][j].endMod - masterSched[i][j].startMod) / 2);
 				if (j === middleMod) {
 					// If this mod is the middle mod, then add text to it
-					$("td." + conversionTable[i] + "Col.mod" + j).find(".schedModTextContainer").text(masterSched[i][j].name); // TODO text half-"block" lower!
+					$("td." + conversionTable[i] + "Col.mod" + j).find(".schedModTextContainer").text(wordWrap(masterSched[i][j].name, 12));
+					// TODO text half-"block" lower! TODO test if 12 char word wrap is accurate for pun laptop!
 					$("td." + conversionTable[i] + "Col.mod" + j).data("backgroundColorAlpha", "1");
 				}
 			}
