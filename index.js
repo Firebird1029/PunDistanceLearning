@@ -145,7 +145,7 @@ function getStudentDataViaNightmare (username, password, callback) {
 		.type('input[id="form:userId"]', username)
 		.type('input[id="form:userPassword"]', password)
 		.click('input[name="form:signIn"]')
-		.wait(1000)
+		.wait(2000)
 		.evaluate(function() {
 			if (document.getElementById("form:errorMsgs") == null) {
 				console.log("in")
