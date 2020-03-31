@@ -39,13 +39,24 @@ var express = require("express"),
 	// Project-Specific Dependencies
 	io = require("socket.io"),
 	listener = io.listen(server),
-
-	Nightmare = require("nightmare"),
-	nightmare = Nightmare({show: true}),
 	cheerio = require("cheerio"),
 
 	// Utilities & Custom Modules
 	utils = require("./utils.js");
+
+const Xvfb = require('xvfb');
+let xvfb = new Xvfb();
+
+try {
+  xvfb.startSync();
+}
+catch (e) {
+  console.log(e);
+}
+
+
+Nightmare = require("nightmare");
+nightmare = Nightmare({show: false});
 
 // Setup Express Middleware
 app.set("view engine", "pug");
