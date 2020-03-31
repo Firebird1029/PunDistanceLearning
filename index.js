@@ -18,6 +18,8 @@ var debug = true;
  * https://github.com/segmentio/nightmare/issues/224#issuecomment-239335488
  * https://stackoverflow.com/questions/40178836/run-nightmare-by-pm2-or-something-like-that-on-the-server
  * https://devhints.io/pm2
+ * https://github.com/segmentio/nightmare/issues/224#issuecomment-141575361
+ * https://stackoverflow.com/questions/36719236/nightmare-js-not-working
  *
  * https://pm2.keymetrics.io/docs/usage/use-pm2-with-cloud-providers/
  * https://pm2.keymetrics.io/docs/integrations/heroku/
