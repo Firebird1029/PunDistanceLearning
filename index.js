@@ -45,8 +45,6 @@ var express = require("express"),
 	// Utilities & Custom Modules
 	utils = require("./utils.js");
 
-const Xvfb = require('xvfb');
-let xvfb = new Xvfb();
 let Nightmare = require("nightmare");
 let nightmare = Nightmare({show: false});
 
@@ -126,7 +124,6 @@ function extractDataFromTable(callback) {
 		.then(response => {
 			getDataFromTable(response, function(data) {
 				nightmare.end();
-				xvfb.stopSync();
 				callback(["success", data]);
 			});
 			
@@ -144,12 +141,6 @@ function getStudentDataViaNightmare (username, password, callback) {
 	console.log(username);
 	console.log(password);
 
-	try {
-		xvfb.startSync();
-	}
-	catch (e) {
-		console.log(e);
-	}
 
 	nightmare
 		.goto('https://mybackpack.punahou.edu/SeniorApps/facelets/registration/loginCenter.xhtml')
