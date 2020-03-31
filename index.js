@@ -56,8 +56,8 @@ catch (e) {
 }
 
 
-Nightmare = require("nightmare");
-nightmare = Nightmare({show: false});
+let Nightmare = require("nightmare");
+let nightmare = Nightmare({show: false});
 
 // Setup Express Middleware
 app.set("view engine", "pug");
