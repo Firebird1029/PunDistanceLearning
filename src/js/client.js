@@ -14,6 +14,7 @@ var masterSched = _.cloneDeep(masterSchedLayout);
 // Brandon's TODO
 // Fix 404 (just reload to homepage)
 // Show the headers of possible sync classes
+// If class name is too long!
 
 // Navbar Burger
 // $(document).ready(function () {
@@ -93,7 +94,8 @@ function populateTable (courseInfo) {
 			if (i === classToLetterDayKey[courseInfo.subject]) {
 				// This course belongs in this column i. For example, Physics will be matched with i value 5 using classToLetterDayKey.
 				if (j >= startMod && j <= endMod) {
-					masterSched[i][j] = courseInfo.name; // Now store the name of the course into the 2D array masterSched
+					masterSched[i][j] = [courseInfo.name, startMod, endMod]; // Now store the info of the course into the 2D array masterSched
+					// I guess masterSched is a 3D array now?
 				}
 			}
 		}
@@ -118,8 +120,8 @@ function displayMasterSched () {
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
 			if (masterSched[i][j].length > 0) {
-				// comment this TODO
-				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).text(masterSched[i][j]); // TODO delete this after dev!
+				// TODO comment this
+				// $("td." + conversionTable[i] + "Col.mod" + (j + 1)).text(masterSched[i][j]); // TODO delete this after dev!
 				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("courseName", masterSched[i][j]);
 				$("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha", "1");
 			}
@@ -129,13 +131,13 @@ function displayMasterSched () {
 }
 
 // Animation For Master Sched
-// TODO -- animation CSS transition delay not working??
 function animateMasterSched () {
 	var alphaColor;
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
 			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j + 1)).data("backgroundColorAlpha") || 0;
 			$("td." + conversionTable[i] + "Col.mod" + (j + 1)).css("backgroundColor", "rgba(227, 182, 14, " + alphaColor + ")");
+			// TODO user selects color
 		}
 	}
 	// backgroundColorAlpha
@@ -157,7 +159,7 @@ if (debug) {
 	$(".oneCourseGroup:last").find(".courseName").val("Sci Fi");
 	$(".oneCourseGroup:last").find(".courseSubjectDropdown").val("English");
 	$(".oneCourseGroup:last").find(".courseStartTimeDropdown").val("11:30 AM");
-	$(".oneCourseGroup:last").find(".courseEndTimeDropdown").val("12:30 PM");
+	$(".oneCourseGroup:last").find(".courseEndTimeDropdown").val("1:00 PM");
 
 	$("#addCourseBtn").click();
 	$(".oneCourseGroup:last").find(".courseName").val("Photography II");
