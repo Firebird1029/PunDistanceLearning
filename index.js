@@ -41,7 +41,7 @@ var express = require("express"),
 	io = require("socket.io"),
 	listener = io.listen(server),
 	cheerio = require("cheerio"),
-	Nightmare = require("nightmare");
+	Nightmare = require("nightmare"),
 
 	// Utilities & Custom Modules
 	utils = require("./utils.js");
