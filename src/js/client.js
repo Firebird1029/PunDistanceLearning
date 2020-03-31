@@ -259,11 +259,27 @@ function animateMasterSched () {
 	for (var i = 0; i < masterSched.length; i++) {
 		for (var j = 0; j < masterSched[i].length; j++) {
 			alphaColor = $("td." + conversionTable[i] + "Col.mod" + (j)).data("backgroundColorAlpha") || 0;
-			$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", "rgba(227, 182, 14, " + alphaColor + ")");
+			var rgb = hexToRgb(("#colorPicker").val());
+			$("td." + conversionTable[i] + "Col.mod" + (j)).css("backgroundColor", `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alphaColor})`);
 			// TODO user selects color
 		}
 	}
 	// backgroundColorAlpha
+}
+
+function hexToRgb(hex) {
+	// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+	var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+	hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+		return r + r + g + g + b + b;
+	});
+
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
 }
 
 // Debug Code
