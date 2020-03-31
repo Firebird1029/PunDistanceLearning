@@ -45,9 +45,6 @@ var express = require("express"),
 	// Utilities & Custom Modules
 	utils = require("./utils.js");
 
-let Nightmare = require("nightmare");
-let nightmare = Nightmare({show: false});
-
 // Setup Express Middleware
 app.set("view engine", "pug");
 app.use(helmet());
@@ -68,6 +65,8 @@ listener.sockets.on("connection", function connectionDetected (socket) {
 	});
 	socket.on("autoSchedule", function studentDataRequest(loginInfo) {
 		console.log("Socket io on server side");
+		let Nightmare = require("nightmare");
+		let nightmare = Nightmare({show: false});
 		getStudentDataViaNightmare(loginInfo[0], loginInfo[1], function(data) {
 			socket.emit("studentSchedData", data);
 		})
