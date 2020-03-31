@@ -15,24 +15,27 @@ html(lang="en")
 				.column.is-three-quarters#mainColumn
 					#startScreen
 						+section()
-							button.button Make My Schedule!
+							button.button#showMakeScheduleScreen Make My Schedule!
 					#makeScheduleScreen.is-hidden
 						+section()
 							button.button.is-success Auto Sign-in to Punahou
+							p.spacer
 							p Or manually enter your schedule information below:
+							//- TODO: need to validate form cuz i need all fields filled out! make sure nothing overlapping etc.
 							#SchedFormCourses
-								.makeSchedFormOneCourseGroup
+								.oneCourseGroupBlank.oneCourseGroup.box.is-hidden
+									.container(style="padding-right: 1rem;").has-text-right: a.deleteCourseBtn: +icon("fa-times")
 									.field
 										label.label Class Name
 										.control
-											input.input(type="text", placeholder="i.e. English IV")
+											input.input.courseName(type="text", placeholder="i.e. English IV")
 									.columns
 										.column
 											.field
 												label.label Subject
 												.control
 													.select
-														select
+														select.courseSubjectDropdown
 															option Select dropdown
 															option languageed
 															option mathhd
@@ -41,7 +44,7 @@ html(lang="en")
 												label.label Class Start Time
 												.control
 													.select
-														select
+														select.courseStartTimeDropdown
 															option Select dropdown
 															option 7:30
 															option 8:00
@@ -50,20 +53,20 @@ html(lang="en")
 												label.label Class End Time
 												.control
 													.select
-														select
+														select.courseEndTimeDropdown
 															option Select dropdown
 															option 7:30
 															option 8:00
 												p.help Use regular school time, aka before Spring Break
 								p.spacer
 								.field
-									button.button.is-outlined#addCourseBtn + Add Class
-									//- TODO add font icon +
+									button.button.is-outlined#addCourseBtn
+										+icon("fa-plus")
+										span Add Class
 							p.spacer
-
 							//- center align this form below
 							form.form#makeScheduleForm
-								.field.is-grouped
+								.field.is-grouped.is-grouped-centered
 									.control
 										button.button.is-link Do Magic!
 
