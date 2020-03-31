@@ -128,7 +128,7 @@ function extractDataFromTable(nightmare, callback) {
 			
 		})
 		.catch(error => {
-			console.error("Error: ", error);
+			callback(["fail", "failedLogin"]);
 		})
 }
 
@@ -137,14 +137,14 @@ function extractDataFromTable(nightmare, callback) {
 */
 function getStudentDataViaNightmare (username, password, callback) {
 	console.log(username);
-	let nightmare = Nightmare({show: false});
+	let nightmare = new Nightmare({show: false});
 	nightmare
 		.goto('https://mybackpack.punahou.edu/SeniorApps/facelets/registration/loginCenter.xhtml')
 		.wait('body')
 		.type('input[id="form:userId"]', username)
 		.type('input[id="form:userPassword"]', password)
 		.click('input[name="form:signIn"]')
-		.wait(2000)
+		.wait(3000)
 		.evaluate(function() {
 			if (document.getElementById("form:errorMsgs") == null) {
 				return true;
@@ -161,6 +161,6 @@ function getStudentDataViaNightmare (username, password, callback) {
 			}
 		})
 		.catch(error => {
-			debug && console.error("Error: ", error);
+			callback(["fail", "failedLogin"]);
 		});
 }
