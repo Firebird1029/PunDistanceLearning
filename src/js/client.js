@@ -203,30 +203,11 @@ $("#autoSignIn").click(function() {
 
 
 function createPDF() {
-	const filename  = 'table.pdf';
+	const filename  = 'table1.pdf';
 	// var quality = 1;
-	html2canvas(document.querySelector("#scheduleTable")).then(canvas => {
-		console.log(canvas)
+	html2canvas(document.getElementById("scheduleTable"), {scale: 1}).then(canvas => {
+		let pdf = new jsPDF('p', 'mm', 'a4');
+		pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 200, 290);
+		pdf.save(filename);
 	});
-	// let pdf = new jsPDF('p', 'mm', 'a4');
-	// pdf.addImage(, 'PNG', 0, 0, 211, 298);
-	// pdf.save(filename);
 }
-	// var doc = new jsPDF('p', 'pt');
-	// var elem = document.getElementById("scheduleTable");
-	// var res = doc.autoTableHtmlToJson(elem);
-	// console.log(res.data);
-	// doc.autoTable({
-	// 	html: '#scheduleTable',
-	// 	columnStyles: {
-	// 		0: {cellWidth: 50},
-	// 		1: {cellWidth: 75},
-	// 		2: {cellWidth: 75},
-	// 		3: {cellWidth: 75},
-	// 		4: {cellWidth: 75},
-	// 		5: {cellWidth: 75},
-	// 		6: {cellWidth: 75}
-	// 	}
-	// });
-	// doc.save("table.pdf");
-// }
