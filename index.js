@@ -136,7 +136,9 @@ function extractDataFromTable(callback) {
  * The studentNum is the student's id number, which is used to select the correct schedule
 */
 function getStudentDataViaNightmare (username, password, callback) {
-	console.log("trying to get student data")
+	console.log("trying to get student data");
+	console.log(username);
+	console.log(password);
 	nightmare = Nightmare({show: false});
 	nightmare
 		.goto('https://mybackpack.punahou.edu/SeniorApps/facelets/registration/loginCenter.xhtml')
