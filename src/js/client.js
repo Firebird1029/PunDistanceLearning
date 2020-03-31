@@ -51,7 +51,7 @@ var socket = io.connect(),
 var masterSched = _.cloneDeep(masterSchedLayout);
 
 var colorSets = {}; // Object with all set colors of the different courses
-var colors = ["#FF0C00", "#D58AEB", "#949FFF", "#8AE5EB", "#87FF9B", "#2D3319", "#517664", "#9FD8CB", "#D6E5E3", "#CACFD6"] // Array of preset colors to use
+var colors = ["#FF0C00", "#D58AEB", "#949FFF", "#8AE5EB", "#87FF9B", "#517664", "#9FD8CB", "#D6E5E3", "#CACFD6"] // Array of preset colors to use
 
 // Navbar Burger
 // $(document).ready(function () {
