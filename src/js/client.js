@@ -60,6 +60,10 @@ var colors = ["#FF0C00", "#D58AEB", "#949FFF", "#8AE5EB", "#87FF9B", "#2D3319", 
 	// 	$(".navbar-menu").toggleClass("is-active");
 	// });
 
+// Trevor's Code
+let messages = ['Stay safe!', 'Remember to wash your hands for 20 seconds.', 'Don’t forget to stay home!', '6 feet apart!', 'Stay healthy!', 'Practice Social Distancing!' , '#Punsunite'];
+$("#funMessage").text("(" + messages[Math.floor(Math.random() * messages.length)] + ")");
+
 // Start Screen
 $("#showMakeScheduleScreen").click(() => {
 	$("#showMakeScheduleScreen").addClass("is-hidden");
@@ -275,7 +279,6 @@ function displayMasterSched () {
 			}
 		}
 	}
-	alert($(".schedMod").eq(0).css("width"))
 	animateMasterSched();
 	debug && console.log("Finished displaying master sched.");
 }

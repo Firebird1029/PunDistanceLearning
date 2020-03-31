@@ -2,20 +2,17 @@ doctype html
 html(lang="en")
 	include includes/head.pug
 	body
-		section.hero.is-full-height
-			.hero-head
-				//- include includes/nav.pug
-			.hero-body
-				.container.has-text-centered
-					h1.title.is-1(style="padding-top: 1rem;") Pun Schedule
-			.hero-foot
+		.container.has-text-centered
+			h1.title.is-1(style="padding-top: 1rem;") Pun Schedule
+			p#funMessage
+			p.spacer
 		article.article
 			include includes/body.pug
-			.columns
-				.column.is-full.has-text-centered
-					button.button#showMakeScheduleScreen Make My Schedule!
 			+section()
 				#startScreen
+					.columns
+						.column.is-full.has-text-centered
+							button.button#showMakeScheduleScreen Make My Schedule!
 				.columns
 					.column.is-three-quarters#mainColumn
 						#makeScheduleScreen.is-hidden
