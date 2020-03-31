@@ -87,7 +87,7 @@ function getDataFromTable(html, callback) {
 		&& courseName != "ASSEM 11" && courseName != "ASSEM 10" && courseName != "ASSEM 9" && courseName != "CHAPEL 12" 
 		&& courseName != "CHAPEL 11" && courseName != "CHAPEL 10" && courseName != "CHAPEL 9") {
 			// Create a new array that stores the course name and time.
-			data.push([courseName]);
+			data.push([titleCase(courseName)]);
 			for (var j = 0; j < 6; j++) {
 				var courseMeetingTime = $(`table.dataTableOdd > tbody > tr > td > table.dataTable > tbody > tr:nth-child(${i + 1}) > td:nth-child(${6 + j})`).text().split("-");
 				// Check if the time is already in the array or if the meeting time is a break
@@ -99,6 +99,18 @@ function getDataFromTable(html, callback) {
 	}
 	callback(data);
 }
+
+// https://stackoverflow.com/questions/32589197/capitalize-first-letter-of-each-word-in-a-string-javascript/45620677
+function titleCase(str) {
+	var splitStr = str.toLowerCase().split(' ');
+	for (var i = 0; i < splitStr.length; i++) {
+		// You do not need to check if i is larger than splitStr length, as your for does that for you
+		// Assign it back to the array
+		splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+	}
+	// Directly return the joined string
+	return splitStr.join(' '); 
+ }
 
 // Pull the schedule data from the correct table
 function extractDataFromTable(callback) {

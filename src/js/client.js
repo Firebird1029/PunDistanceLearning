@@ -1,5 +1,5 @@
 "use strict"; /* eslint-env browser */ /* global */ /* eslint no-warning-comments: [1, { "terms": ["todo", "fix", "help"], "location": "anywhere" }] */
-const debug = true;
+const debug = false;
 
 // These 2 functions are in case the course name is too long
 // https://stackoverflow.com/questions/14484787/wrap-text-in-javascript
@@ -327,6 +327,7 @@ if (debug) {
 socket.on("studentSchedData", function receivedSchedData (data) {
 	console.log(data);
 	if (data[0] === "success") {
+		$("#signInInfoText").addClass("is-hidden");
 		// Populate fields on screen
 		for (var i = 0; i < data[1].length; i++) {
 			$(".oneCourseGroup:last").find(".courseName").val(data[1][i][0]);
