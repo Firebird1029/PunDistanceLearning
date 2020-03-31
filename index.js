@@ -58,20 +58,26 @@ listener.sockets.on("connection", function connectionDetected (socket) {
 function getDataFromTable(html, val, callback) {
 	var data = [[],[],[],[],[],[]];
 	const $ = cheerio.load(html);
-	for (var i = 1; i < 33; i++) {
-		for (var j = 2; j < 8; j++) {
-			var currentCell = $("td.screenCell tbody:nth-child(2) tr:nth-child(" + i + ")" + " td:nth-child(" + j + ")");
-			/* If there is more than 1 <br> in the <td> then there is a class in that particular cell
-			 * Push a 1 into the array if you have a class, a 0 if you don't
-			 */
-			if (currentCell.children().length > 1) {
-				var text = currentCell.html()
-				data[j - 2].push(text.split("<")[0].substring(text.indexOf(' ')+1));
-			} else {
-				data[j - 2].push(0);
-			}
-		}
-	}
+
+	var data = [[],[],[],[],[],[]];
+	console.log($(".dataTableOdd"))
+	console.log($("table.dataTableOdd > tbody > tr > td > table.dataTable > tbody").children().length)
+
+	callback(data);
+	// for (var i = 1; i < 33; i++) {
+	// 	for (var j = 2; j < 8; j++) {
+	// 		var currentCell = $("td.screenCell tbody:nth-child(2) tr:nth-child(" + i + ")" + " td:nth-child(" + j + ")");
+	// 		/* If there is more than 1 <br> in the <td> then there is a class in that particular cell
+	// 		 * Push a 1 into the array if you have a class, a 0 if you don't
+	// 		 */
+	// 		if (currentCell.children().length > 1) {
+	// 			var text = currentCell.html()
+	// 			data[j - 2].push(text.split("<")[0].substring(text.indexOf(' ')+1));
+	// 		} else {
+	// 			data[j - 2].push(0);
+	// 		}
+	// 	}
+	// }
 	callback(data);
 }
 
@@ -94,7 +100,7 @@ function extractDataFromTable(callback) {
 				.select('select', value)
 				.wait(1000)
 				.evaluate(function(){
-					if (document.querySelector("input.chartButtonUp") === null) {
+					if (document.querySelector("input.listButtonUp") === null) {
 						return false;
 					} else {
 						return true;
@@ -103,15 +109,14 @@ function extractDataFromTable(callback) {
 				.then(inputExists => {
 					if (inputExists) {
 						nightmare
-							.wait("input.chartButtonUp")
-							.click("input.chartButtonUp")
+							.wait("input.listButtonUp")
+							.click("input.listButtonUp")
 					}
 					nightmare
-						.wait(5000)
+						.wait(4000)
 						.evaluate(() => document.body.innerHTML)
 						.then(response => {
 							getDataFromTable(response, value, function(data) {
-								// debug && console.log(data);
 								nightmare.end();
 								callback(data);
 							});
