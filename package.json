@@ -21,10 +21,11 @@
 		"node": "^11.5.0"
 	},
 	"scripts": {
-		"start": "pm2 start pm2process.json",
+		"start": "npm-run-all --parallel start-xvfb start-server",
 		"dev": "npm-run-all --parallel start-server start-dev-build",
 		"start-server": "node index.js",
 		"start-dev-build": "gulp",
+		"start-xvfb": "Xvfb -ac -screen scrn 1280x2000x24 :9.0",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"postinstall": "gulp production"
 	},

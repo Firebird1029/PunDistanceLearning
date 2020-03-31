@@ -2,16 +2,26 @@
 	"apps": [
 		{
 			"name": "PunDistanceLearning",
-			"script": "index.js",
+			"script": "npm",
+			"args": "start",
 			"env": {
 				"DISPLAY": ":99"
 			}
-		},
-		{
-			"name": "Xvfb",
-			"interpreter": "none",
-			"script": "Xvfb",
-			"args": "-ac -screen scrn 1280x2000x24 :9.0"
 		}
 	]
+	// "apps": [
+	// 	{
+	// 		"name": "PunDistanceLearning",
+	// 		"script": "index.js",
+	// 		"env": {
+	// 			"DISPLAY": ":99"
+	// 		}
+	// 	},
+	// 	{
+	// 		"name": "Xvfb",
+	// 		"interpreter": "none",
+	// 		"script": "Xvfb",
+	// 		"args": "-ac -screen scrn 1280x2000x24 :9.0"
+	// 	}
+	// ]
 }
