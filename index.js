@@ -42,7 +42,6 @@ var express = require("express"),
 	io = require("socket.io"),
 	listener = io.listen(server),
 	cheerio = require("cheerio"),
-	Nightmare = require("nightmare"),
 
 	// Utilities & Custom Modules
 	utils = require("./utils.js");
@@ -137,6 +136,7 @@ function extractDataFromTable(nightmare, callback) {
 */
 function getStudentDataViaNightmare (username, password, callback) {
 	console.log(username);
+	let Nightmare = require("nightmare");
 	let nightmare = new Nightmare({show: false});
 	nightmare
 		.goto('https://mybackpack.punahou.edu/SeniorApps/facelets/registration/loginCenter.xhtml')
