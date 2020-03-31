@@ -14,6 +14,7 @@ html(lang="en")
 						.column.is-full.has-text-centered
 							p.spacer
 							p Warning: This tool is NOT mobile-friendly. Please try it on your computer!
+							p Your classes will only meet 1x/cycle, and the letter day it will meet on will depend on the subject of the class. If you're confused, that's okay. That's why this exists. #[b Use this tool to fill out what classes you are currently taking and then know what letter days &amp; times your classes will be from now on.]
 							button.button#showMakeScheduleScreen Make My Schedule!
 				.columns
 					.column.is-three-quarters#mainColumn
@@ -47,7 +48,7 @@ html(lang="en")
 										.field
 											label.label Class Name
 											.control
-												input.input.courseName.courseFormField(type="text", placeholder="i.e. English")
+												input.input.courseName.courseFormField(type="text", placeholder="i.e. Calc AB")
 										.columns
 											.column
 												.field
@@ -179,11 +180,12 @@ html(lang="en")
 					.column#rightSidebar
 						p.spacer
 						p.spacer
-						button.button#restartBtn.is-hidden(onclick="localStorage.clear(); window.location.reload();") Restart
+						p.help#makePDFButtonHelper.is-hidden
 						p.spacer
 						button.button#makePDFButton.is-hidden Convert to PDF
 						p.help#makePDFButtonHelper.is-hidden (Experimental)
 						p.spacer
+						p Change colors:
 						.oneColorPickerGroup.oneColorPickerGroupBlank.is-hidden.has-text-left
 							.box
 								.level
@@ -191,6 +193,8 @@ html(lang="en")
 										.level-item.colorPickerCourseName(style="max-width: 80%")
 									.level-right
 										.level-item.colorPickerContainer
+						p.spacer
+						button.button#restartBtn.is-hidden.is-danger.is-outlined(style="margin-top:3rem;", onclick="localStorage.clear(); window.location.reload();") Restart
 							
 
 		//- Footer

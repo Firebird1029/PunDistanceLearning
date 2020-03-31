@@ -71,7 +71,7 @@ if (localStorage.getItem("schedData") != null) {
 	// });
 
 // Trevor's Code
-let messages = ['Stay safe!', 'Remember to wash your hands for 20 seconds.', 'Don’t forget to stay home!', '6 feet apart!', 'Stay healthy!', 'Practice Social Distancing!' , '#Punsunite'];
+let messages = ['Remember to wash your hands for 20 seconds.', '6 feet apart!', 'Stay healthy!', 'Practice Social Distancing!' , '#Punsunite'];
 $("#funMessage").text("(" + messages[Math.floor(Math.random() * messages.length)] + ")");
 
 // Start Screen
