@@ -65,7 +65,6 @@ listener.sockets.on("connection", function connectionDetected (socket) {
 		socket.emit("refreshResponse", {});
 	});
 	socket.on("autoSchedule", function studentDataRequest(loginInfo) {
-		console.log("Socket io on server side");
 		getStudentDataViaNightmare(loginInfo[0], loginInfo[1], function(data) {
 			socket.emit("studentSchedData", data);
 		})
