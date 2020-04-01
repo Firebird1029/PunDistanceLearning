@@ -430,8 +430,8 @@ socket.on("studentSchedData", function receivedSchedData (data) {
 
 
 function createPDF() {
-	console.log("HGVGGHVGVH");
 	$("#makePDFButton").html(`<i class="fas fa-spinner fa-spin"></i>`);
+	$("#makePDFButton").attr("disabled", "disabled");
 	// https://github.com/niklasvh/html2canvas/issues/1878
 	// https://stackoverflow.com/questions/31656689/how-to-save-img-to-users-local-computer-using-html2canvas
 	html2canvas(document.getElementById("scheduleTable"), {
@@ -441,9 +441,10 @@ function createPDF() {
 	}).then(canvas => {
 		saveAs(canvas.toDataURL(), "schedule.png");
 		$("#makePDFButton").html("Download Schedule");
+		$("#makePDFButton").removeAttr("disabled", "disabled");
 	});
 }
-
+	
 function saveAs(uri, filename) {
 
 	var link = document.createElement('a');
