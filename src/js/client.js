@@ -425,7 +425,7 @@ function createPDF() {
 	// var quality = 1;
 	html2canvas(document.getElementById("scheduleTable"), {scale: 2}).then(canvas => {
 		let pdf = new jsPDF('p', 'mm', 'letter', false, true); // false, true, 10
-		pdf.addImage(canvas.toDataURL('image/png'), 'JPEG', 32, -20, 150, 280, "SLOW");
+		pdf.addImage(canvas.toDataURL('image/png'), 'JPEG', 32, 0, 150, 280, "SLOW");
 		pdf.save(filename);
 		$("#makePDFButton").html("Convert to PDF");
 	});
