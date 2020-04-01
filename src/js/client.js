@@ -60,7 +60,6 @@ if (localStorage.getItem("schedData") != null) {
 	colorSets = JSON.parse(localStorage.getItem("colorSets"));
 	$("#startScreen").addClass("is-hidden");
 	displayMasterSched();
-	console.log("wee");
 }
 
 // Navbar Burger
@@ -132,6 +131,16 @@ $(".deleteCourseBtn").click(function () {
 $("#makeScheduleForm").on("submit", (e) => {
 	e.preventDefault();
 	compileWebForm();
+});
+
+// Toggle Office Hours
+$("#toggleOfficeHours").click(() => {
+	$(".optionalOfficeHoursCol").toggleClass("is-hidden");
+});
+
+// Toggle Headers
+$("#toggleHeaders").click(() => {
+	$(".optionalHeadersRow").toggleClass("is-hidden");
 });
 
 function compileWebForm () {
@@ -257,7 +266,7 @@ function resetMasterSched () {
 function displayMasterSched () {
 	debug && console.log("Displaying master sched...");
 	$("#tableScreen").removeClass("is-hidden");
-	$("#makePDFButton, #makePDFButtonHelper, #restartBtn, #changeColorsText").removeClass("is-hidden");
+	$("#rightSidebarBtns, #changeColorsText").removeClass("is-hidden");
 	resetMasterSched();
 	var middleMod; // The middle mod between the start and end mod. Will be explained later inside the function.
 	// i is the column, j is the row of the DOM schedule table that corresponds with masterSched
@@ -385,7 +394,6 @@ if (debug) {
 socket.on("studentSchedData", function receivedSchedData (data) {
 	console.log(data);
 	if (data[0] === "success") {
-		$("#signInInfoText").addClass("is-hidden");
 		// Populate fields on screen
 		for (var i = 0; i < data[1].length; i++) {
 			if (data[1][i][0].indexOf(data[1][i][0].substring(0, 4)) !== data[1][i][0].lastIndexOf(data[1][i][0].substring(0, 4))) {
@@ -410,6 +418,9 @@ socket.on("studentSchedData", function receivedSchedData (data) {
 
 		// Hide modal
 		$(".modal").removeClass("is-active");
+		// $("#signInInfoText").addClass("is-hidden");
+		$("#signInInfoText").text("Import successful! Please fill out what subject each class is in.\
+			Also, classes with Large and Small will be duplicated below, just choose your small section time.").animateCSS("flash");
 	} else {
 		// Login failed, hide modal and tell user it failed
 		$(".modal").removeClass("is-active");

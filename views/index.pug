@@ -13,9 +13,9 @@ html(lang="en")
 					.columns
 						.column.is-full.has-text-centered
 							p.spacer
-							p Warning: This tool is NOT mobile-friendly. Please try it on your computer!
-							p Your classes will only meet 1x/cycle, and the letter day it will meet on will depend on the subject of the class. If you're confused, that's okay. That's why this exists. #[b Use this tool to fill out what classes you are currently taking and then know what letter days &amp; times your classes will be from now on.]
-							button.button#showMakeScheduleScreen Make My Schedule!
+							p Your classes will only meet 1x/cycle, and the letter day it will meet on will depend on the subject of the class. #[b Use this tool to fill out what classes you are currently taking and then know what letter days &amp; times your classes will be from now on.]
+							p.is-hidden-desktop Sorry, this tool is NOT mobile-friendly :( &nbsp;&nbsp;Please try it on your computer!
+							button.button#showMakeScheduleScreen.is-hidden-touch Make My Schedule!
 				.columns
 					.column.is-three-quarters#mainColumn
 						#makeScheduleScreen.is-hidden
@@ -145,10 +145,72 @@ html(lang="en")
 												th(style="text-align: center;") D
 												th(style="text-align: center;") E
 												th(style="text-align: center;") F
-												th(style="text-align: center; width: 5rem;").optionalOfficeHoursCol Office Hours
+												th(style="text-align: center; width: 6rem; border-bottom: 2px solid black;").optionalOfficeHoursCol Office Hours
 										tbody
-											- var i=1
+											- var i=1;
 											- var DLmodTimeConversion = {1: "9:00", 2: "9:10", 3: "9:20", 4: "9:30", 5: "9:40", 6: "9:50", 7: "10:00", 8: "10:10", 9: "10:20", 10: "10:30", 11: "10:40", 12: "10:50", 13: "11:00", 14: "11:10", 15: "11:20", 16: "11:30", 17: "11:40", 18: "11:50", 19: "12:00", 20: "12:10", 21: "12:20", 22: "12:30", 23: "12:40", 24: "12:50", 25: "1:00", 26: "1:10", 27: "1:20", 28: "1:30", 29: "1:40", 30: "1:50", 31: "2:00", 32: "2:10", 33: "2:20"};
+											- var officeHoursClasses;
+											- var officeHoursName;
+											tr.optionalHeadersRow
+												th.is-unselectable.optionalHeadersCol
+													span Possible #[b Classes]
+													br
+													span on this Day
+												td.is-unselectable.optionalHeadersCol
+													span Language, 
+													br
+													span Art
+												td.is-unselectable.optionalHeadersCol
+													span Social Studies, 
+													br
+													span DT
+												td.is-unselectable.optionalHeadersCol
+													span Math, 
+													br
+													span Music
+												td.is-unselectable.optionalHeadersCol
+													span S+Well, 
+													br
+													span Theatre
+												td.is-unselectable.optionalHeadersCol
+													span English, 
+													br
+													span PE
+												td.is-unselectable.optionalHeadersCol
+													span Science, 
+													br
+													span JROTC
+												//- td.is-unselectable.optionalOfficeHoursCol
+											tr.optionalHeadersRow
+												th.is-unselectable.optionalHeadersCol
+													span Possible #[b Projects]/
+													br
+													span #[b Tests] Due
+												td.is-unselectable.optionalHeadersCol
+													span S+Well, 
+													br
+													span Theatre
+												td.is-unselectable.optionalHeadersCol
+													span English, 
+													br
+													span PE
+												td.is-unselectable.optionalHeadersCol
+													span Science, 
+													br
+													span JROTC
+												td.is-unselectable.optionalHeadersCol
+													span Language, 
+													br
+													span Art
+												td.is-unselectable.optionalHeadersCol
+													span Social Studies, 
+													br
+													span DT
+												td.is-unselectable.optionalHeadersCol
+													span Math, 
+													br
+													span Music
+												//- td.is-unselectable.optionalOfficeHoursCol
 											while i <= 33
 												tr
 													th.schedModTimeHeader= DLmodTimeConversion[i]
@@ -158,19 +220,59 @@ html(lang="en")
 													td.schedMod.is-unselectable.dCol(class=["mod" + i]): .schedModTextContainer
 													td.schedMod.is-unselectable.eCol(class=["mod" + i]): .schedModTextContainer
 													td.schedMod.is-unselectable.fCol(class=["mod" + i]): .schedModTextContainer
-													if (i === 0)
-														td.is-unselectable.optionalOfficeHoursCol English,
-													else if (i === 1)
-														td.is-unselectable.optionalOfficeHoursCol Social Studies,
-													else if (i === 2)
-														td.is-unselectable.optionalOfficeHoursCol PE,
-													else if (i === 3)
-														td.is-unselectable.optionalOfficeHoursCol Theatre
-													else
-														td.is-unselectable.optionalOfficeHoursCol
+													if (i >=1)
+														- officeHoursClasses = "noBorder sideBorder topBorder"
+														- officeHoursName = "(9 to 11)"
+													if (i >= 2)
+														- officeHoursClasses = "noBorder sideBorder"
+														- officeHoursName = "English,"
+													if (i >= 3)
+														- officeHoursName = "Social"
+													if (i >= 4)
+														- officeHoursName = "Studies,"
+													if (i >= 5)
+														- officeHoursName = "PE,"
+													if (i >= 6)
+														- officeHoursName = "Theatre"
+													if (i >= 7)
+														- officeHoursName = ""
+													if (i >= 13)
+														- officeHoursClasses = "noBorder sideBorder topBorder"
+														- officeHoursName = "(11 to 1)"
+													if (i >= 14)
+														- officeHoursClasses = "noBorder sideBorder"
+														- officeHoursName = "Math,"
+													if (i >= 15)
+														- officeHoursName = "Art,"
+													if (i >= 16)
+														- officeHoursName = "Music,"
+													if (i >= 17)
+														- officeHoursName = "DT"
+													if (i >= 18)
+														- officeHoursName = ""
+													if (i >= 26)
+														- officeHoursClasses = "noBorder topBorder"
+													if (i >= 27)
+														- officeHoursClasses = "noBorder"
+													if (i >= 28)
+														- officeHoursClasses = "noBorder sideBorder topBorder"
+														- officeHoursName = "(1:30-3:30)"
+													if (i >= 29)
+														- officeHoursClasses = "noBorder sideBorder"
+														- officeHoursName = "Science,"
+													if (i >= 30)
+														- officeHoursName = "Language,"
+													if (i >= 31)
+														- officeHoursName = "S+WELL,"
+													if (i >= 32)
+														- officeHoursName = "JROTC"
+													if (i >= 33)
+														- officeHoursClasses = "noBorder sideBorder bottomBorder";
+														- officeHoursName = "";
+													td.is-unselectable.optionalOfficeHoursCol(class=officeHoursClasses).is-italic= officeHoursName
 													
 
-												- i++
+												- i++;
 							h4.title.is-h4 Office Hours: 
 							p 9:00 AM to 11:00 AM, every cycle day: English, Social Studies, PE, and Theatre
 							p 11:00 AM to 1:00 PM, every cycle day: Math, Art, Music, DT
@@ -180,11 +282,6 @@ html(lang="en")
 					.column#rightSidebar
 						p.spacer
 						p.spacer
-						p.help#makePDFButtonHelper.is-hidden
-						p.spacer
-						button.button#makePDFButton.is-hidden Convert to PDF
-						p.help#makePDFButtonHelper.is-hidden (Experimental)
-						p.spacer
 						p#changeColorsText.is-hidden Change colors:
 						.oneColorPickerGroup.oneColorPickerGroupBlank.is-hidden.has-text-left
 							.box
@@ -193,8 +290,16 @@ html(lang="en")
 										.level-item.colorPickerCourseName(style="max-width: 80%")
 									.level-right
 										.level-item.colorPickerContainer
-						p.spacer
-						button.button#restartBtn.is-hidden.is-danger.is-outlined(style="margin-top:3rem;", onclick="localStorage.clear(); window.location.reload();") Restart
+						#rightSidebarBtns.is-hidden
+							p.spacer
+							button.button#toggleOfficeHours Show/Hide Office Hours
+							p
+							button.button#toggleHeaders Show/Hide Headers
+							p.spacer
+							button.button#makePDFButton Convert to PDF
+							p.help#makePDFButtonHelper (Experimental)
+							p.spacer
+							button.button#restartBtn.is-danger.is-outlined(style="margin-top:3rem;", onclick="localStorage.clear(); window.location.reload();") Restart
 							
 
 		//- Footer
