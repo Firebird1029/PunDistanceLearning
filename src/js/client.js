@@ -433,6 +433,7 @@ function createPDF() {
 	console.log("HGVGGHVGVH");
 	$("#makePDFButton").html(`<i class="fas fa-spinner fa-spin"></i>`);
 	// https://github.com/niklasvh/html2canvas/issues/1878
+	// https://stackoverflow.com/questions/31656689/how-to-save-img-to-users-local-computer-using-html2canvas
 	html2canvas(document.getElementById("scheduleTable"), {
 		scale: 4,
 		scrollX: 0,
