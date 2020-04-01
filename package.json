@@ -27,7 +27,7 @@
 		"start-dev-build": "gulp",
 		"start-xvfb": "Xvfb -ac -screen scrn 1280x2000x24 :9.0 &",
 		"start-pm2": "pm2 start index.js",
-		"prep": "export DISPLAY=:9.0; gulp production; lsof -i TCP:8000;",
+		"prep": "export DISPLAY=:9.0; gulp production;",
 		"kill": "pm2 kill; pm2 flush; killall -9 Xvfb;",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"postinstall": "gulp production"
