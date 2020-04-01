@@ -432,10 +432,11 @@ socket.on("studentSchedData", function receivedSchedData (data) {
 function createPDF() {
 	console.log("HGVGGHVGVH");
 	$("#makePDFButton").html(`<i class="fas fa-spinner fa-spin"></i>`);
-	const filename  = 'table1.pdf';
+	// const filename  = 'table1.pdf';
 	// var quality = 1;
 	html2canvas(document.getElementById("scheduleTable"), {scale: 4}).then(canvas => {
-		saveAs(canvas.toDataURL(), 'schedule.png');
+		saveAs(canvas.toDataURL(), "schedule.png");
+		$("#makePDFButton").html("Download Schedule");
     });
 }
 
