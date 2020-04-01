@@ -201,7 +201,6 @@ function compileWebForm () {
 		});
 		displayMasterSched();
 		$("#makeScheduleScreen").addClass("is-hidden");
-		$("#footerContainer").removeClass("is-hidden");
 	} else {
 		$(".courseFormField").removeClass("is-danger");
 		$("#formErrorsNotice").addClass("is-invisible");
@@ -267,6 +266,7 @@ function displayMasterSched () {
 	debug && console.log("Displaying master sched...");
 	$("#tableScreen").removeClass("is-hidden");
 	$("#rightSidebarBtns, #changeColorsText").removeClass("is-hidden");
+	$("#footerContainer").removeClass("is-hidden");
 	resetMasterSched();
 	var middleMod; // The middle mod between the start and end mod. Will be explained later inside the function.
 	// i is the column, j is the row of the DOM schedule table that corresponds with masterSched
