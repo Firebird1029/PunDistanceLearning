@@ -432,35 +432,41 @@ socket.on("studentSchedData", function receivedSchedData (data) {
 function createPDF() {
 	$("#makePDFButton").html(`<i class="fas fa-spinner fa-spin"></i>`);
 	$("#makePDFButton").attr("disabled", "disabled");
-	html2canvas(document.getElementById("scheduleTable"), {scale: 1}).then(canvas => {
-		saveAs(canvas.toDataURL(), 'sche.png');
+	// https://github.com/niklasvh/html2canvas/issues/1878
+	html2canvas(document.getElementById("scheduleTable"), {
+		scale: 4,
+		scrollX: 0,
+		scrollY: -window.scrollY
+	}).then(canvas => {
+		saveAs(canvas.toDataURL(), "schedule.png");
 		$("#makePDFButton").html("Download Schedule");
 		$("#makePDFButton").removeAttr("disabled", "disabled");
-    });
+	});
 }
+	
 function saveAs(uri, filename) {
 
-    var link = document.createElement('a');
+	var link = document.createElement('a');
 
-    if (typeof link.download === 'string') {
+	if (typeof link.download === 'string') {
 
-        link.href = uri;
-        link.download = filename;
+		link.href = uri;
+		link.download = filename;
 
-        //Firefox requires the link to be in the body
-        document.body.appendChild(link);
+		//Firefox requires the link to be in the body
+		document.body.appendChild(link);
 
-        //simulate click
-        link.click();
+		//simulate click
+		link.click();
 
-        //remove the link when done
-        document.body.removeChild(link);
+		//remove the link when done
+		document.body.removeChild(link);
 
-    } else {
+	} else {
 
-        window.open(uri);
+		window.open(uri);
 
-    }
+	}
 }
 
 
