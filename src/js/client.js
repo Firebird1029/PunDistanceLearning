@@ -434,12 +434,34 @@ function createPDF() {
 	$("#makePDFButton").html(`<i class="fas fa-spinner fa-spin"></i>`);
 	const filename  = 'table1.pdf';
 	// var quality = 1;
-	html2canvas(document.getElementById("scheduleTable"), {scale: 2}).then(canvas => {
-		let pdf = new jsPDF('p', 'mm', 'letter', false, true); // false, true, 10
-		pdf.addImage(canvas.toDataURL('image/png'), 'JPEG', 32, 0, 150, 280, "SLOW");
-		pdf.save(filename);
-		$("#makePDFButton").html("Convert to PDF");
-	});
+	html2canvas(document.getElementById("scheduleTable"), {scale: 4}).then(canvas => {
+		saveAs(canvas.toDataURL(), 'schedule.png');
+    });
+}
+
+function saveAs(uri, filename) {
+
+    var link = document.createElement('a');
+
+    if (typeof link.download === 'string') {
+
+        link.href = uri;
+        link.download = filename;
+
+        //Firefox requires the link to be in the body
+        document.body.appendChild(link);
+
+        //simulate click
+        link.click();
+
+        //remove the link when done
+        document.body.removeChild(link);
+
+    } else {
+
+        window.open(uri);
+
+    }
 }
 
 
